@@ -41,3 +41,6 @@ vignettes/*.pdf
 # vi files
 *.sw?
 inst/doc
+
+# skip prototype code
+prototype.R
