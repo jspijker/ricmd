@@ -16,7 +16,7 @@
 
 ri_getCollection <- function() {
 
-    if(!ri_testCollection()) {
+    if(!testCollection()) {
         stop("collection not set")
     }
 
