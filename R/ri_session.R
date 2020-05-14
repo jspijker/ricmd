@@ -20,6 +20,7 @@ ri_session <- function(env=path.expand('~/.irods/irods_environment.json')) {
     irods <- import("irods.session")
     session <- irods$iRODSSession(irods_env_file=env)
     assign("session",session,env=.ricmdEnv)
+    assign("collection",NA,env=.ricmdEnv)
 
 }
 
