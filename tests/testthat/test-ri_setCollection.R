@@ -2,7 +2,6 @@ context("ri_setCollection")
 
 test_that("valid arguments", {
 
-              testColl <- "/tempZone/home/devel"
               expect_error(ri_setCollection(testColl))
 
               ri_session()
@@ -15,7 +14,6 @@ test_that("valid arguments", {
 test_that("correct functioning", {
 
               ri_session()
-              testColl <- "/tempZone/home/devel"
               ri_setCollection(testColl)
               coll <- get("collection",env=.ricmdEnv)
               expect_equal(testColl,coll)

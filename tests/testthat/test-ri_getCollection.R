@@ -2,7 +2,6 @@ context("ri_getCollection")
 
 test_that("correct functioning",{
 
-              testColl <- "/tempZone/home/devel"
               ri_session()
               expect_error(ri_getCollection()) # collection not set
               ri_setCollection(testColl)
