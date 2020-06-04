@@ -11,7 +11,8 @@
 #' @param overwrite overwrite existing data objects, default to FALSE
 #'
 #'
-#collection
+#' @export
+
 
 ri_put <- function (filename,collection=NULL, object=NULL,overwrite=FALSE) {
 
@@ -46,9 +47,6 @@ ri_put <- function (filename,collection=NULL, object=NULL,overwrite=FALSE) {
     }
 
     session$data_objects$put(filename,objpath)
-    
-
-
 
 
 }
