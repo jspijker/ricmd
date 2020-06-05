@@ -65,6 +65,49 @@ test_that("simple data object get", {
 
 test_that("specified data object get", {
 
+
+              ri_session()
+              session <- getSession()
+              thisTestColl <- file.path(testColl,"testget")
+              ri_createCollection(thisTestColl)
+              ri_setCollection(testColl)
+              ri_setDatadir(testDatadir)
+              
+              x <- rnorm (10)
+              fname.x <- tempfile()
+              objname <- basename(fname.x)
+              saveRDS(x,fname.x)
+
+              ri_put(fname.x,collection=thisTestColl)
+              unlink(fname.x)
+
+
+              expect_false(file.exists(file.path(testDatadir,objname)))
+              ri_get(object=objname,collection=thisTestColl)
+              expect_true(file.exists(file.path(testDatadir,objname)))
+              unlink(file.path(testDatadir,objname))
+
+              expect_false(file.exists(file.path(testDatadir,"test1")))
+              ri_get(object=objname,collection=thisTestColl,filename="test1")
+              expect_true(file.exists(file.path(testDatadir,"test1")))
+              unlink(file.path(testDatadir,"test1"))
+
+              extraDatadir <- file.path(tempdir(),"testdir")
+              dir.create(extraDatadir)
+
+              expect_false(file.exists(file.path(extraDatadir,"testdir","test1")))
+              ri_get(object=objname,collection=thisTestColl,filename="test1",datadir=extraDatadir)
+              expect_true(file.exists(file.path(extraDatadir,"test1")))
+              unlink(file.path(extraDatadir,"test1"))
+
+              if(ri_objectExists(objname,collection=thisTestColl)) {
+                  session$data_objects$unlink(paste0(thisTestColl,"/",objname))
+              }
+
+              ri_removeCollection(thisTestColl)
+              unlink(extraDatadir,recursive=TRUE)
+              destroySession()
+
 })
 
 test_that("overwrite existing file", {
