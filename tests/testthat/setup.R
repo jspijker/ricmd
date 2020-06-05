@@ -11,7 +11,9 @@ session$collections$create(testColl)
 rm(session)
 
 testDatadir <- file.path(tempdir(),'data')
-dir.create(testDatadir)
+if(!dir.exists(testDatadir)) {
+    dir.create(testDatadir)
+}
 
 
 cat("Done!\n")

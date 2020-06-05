@@ -112,4 +112,29 @@ test_that("specified data object get", {
 
 test_that("overwrite existing file", {
 
+
+
+              ri_session()
+              ri_setCollection(testColl)
+              ri_setDatadir(testDatadir)
+              session <- getSession()
+              
+              x <- rnorm (10)
+              fname.x <- tempfile()
+              objname <- basename(fname.x)
+              saveRDS(x,fname.x)
+
+              ri_put(fname.x)
+              unlink(fname.x)
+              ri_get(objname)
+              expect_error(ri_get(objname))
+              ri_get(objname,overwrite=TRUE)
+
+              if(ri_objectExists(objname)) {
+                  session$data_objects$unlink(paste0(testColl,"/",objname))
+              }
+              unlink(file.path(testDatadir,objname))
+
+
+
 })

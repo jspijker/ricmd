@@ -65,6 +65,13 @@ ri_get <- function(object,collection=ri_getCollection(),
     session <- getSession()
     objpath <- file.path(collection,object)
     fname <- file.path(datadir,filename)
+    if(file.exists(fname)) {
+        if(overwrite) {
+            unlink(fname)
+        } else {
+            stop("ri_get: file allready exists in data directory and overwrite=FALSE")
+        }
+    }
     obj <- session$data_objects$get(objpath,fname)
 
 
