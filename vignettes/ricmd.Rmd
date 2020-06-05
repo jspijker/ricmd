@@ -17,3 +17,29 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(ricmd)
 ```
+
+# Introduction
+
+ * What is iRODS
+ * why this package  
+ * uses and limitations  
+
+## Rationale 
+
+
+ * Data workflows / data science architecture
+ * Seperate code and data  
+
+# Setup working environment
+
+ * Session
+ * Collection
+ * Data objects  
+ * Files and data path  
+ * Initialise  
+
+# Create, remove and select collections
+
+# Store, retrieve and remove data objects
+
+# Manage meta data
