@@ -4,7 +4,9 @@ context("ri_get")
 test_that("valid arguments", {
 
               ri_session()
+              session <- getSession()
               ri_setCollection(testColl)
+              ri_setDatadir(testDatadir)
               x <- rnorm (10)
               fname.x <- tempfile()
               saveRDS(x,fname.x)
@@ -17,6 +19,7 @@ test_that("valid arguments", {
               expect_error(ri_get(object=fname.x,overwrite=1))
 
               expect_error(ri_get(object="nonexistsingobject"))
+              expect_error(ri_get(object=fname.x,collection="nonexistsingcollection"))
 
               if(ri_objectExists(basename(fname.x))) {
                   session$data_objects$unlink(paste0(testColl,"/",basename(fname.x)))
@@ -31,27 +34,32 @@ test_that("valid arguments", {
 
 test_that("simple data object get", {
 
-# 
-#               ri_session()
-#               ri_setCollection(testColl)
-#               session <- getSession()
-#               
-#               x <- rnorm (10)
-#               fname.x <- tempfile()
-#               saveRDS(x,fname.x)
-# 
-#               ri_put(fname.x)
-#               unlink(fname.x)
-# 
-#               ri_get
-# 
-# 
-#               if(ri_objectExists(basename(fname.x))) {
-#                   session$data_objects$unlink(paste0(testColl,"/",basename(fname.x)))
-#               }
-# 
-#               destroySession()
-# 
+
+              ri_session()
+              ri_setCollection(testColl)
+              ri_setDatadir(testDatadir)
+              session <- getSession()
+              
+              x <- rnorm (10)
+              fname.x <- tempfile()
+              saveRDS(x,fname.x)
+
+              ri_put(fname.x)
+              unlink(fname.x)
+
+              expect_false(file.exists(file.path(testDatadir,basename(fname.x))))
+
+              ri_get(basename(fname.x))
+
+              expect_true(file.exists(file.path(testDatadir,basename(fname.x))))
+
+
+              if(ri_objectExists(basename(fname.x))) {
+                  session$data_objects$unlink(paste0(testColl,"/",basename(fname.x)))
+              }
+
+              destroySession()
+
 
 })
 
