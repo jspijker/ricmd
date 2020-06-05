@@ -20,6 +20,9 @@ With this package you can:
 This package is under development and not al functions are implemented
 yet
 
+Currently only the basic functions needed to store,retrieve and remove
+data objects from an iRODS collection are implemented. 
+
 # licence
 
 This package is publicly available under the [GPL 3.0
