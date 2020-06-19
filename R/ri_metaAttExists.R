@@ -13,7 +13,7 @@
 #'
 #'
 #'
-#'
+#' @export
 
 
 ri_metaAttExists <- function(object,attribute,collection=ri_getCollection()) {
