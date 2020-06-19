@@ -75,6 +75,11 @@ ri_metaAdd <- function(object,attribute,value,collection=ri_getCollection(),
             stop("ri_metaAdd: attribute allready exists and overwrite=FALSE")
         }
     }
+
+    if(!ri_objectExists(object)) {
+        stop("ri_metaAdd: object does not exists")
+    }
+
     
     session <- getSession()
     objpath <- file.path(collection,object)
