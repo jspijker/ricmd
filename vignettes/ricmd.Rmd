@@ -150,8 +150,26 @@ ri_getCollection()
 A new data collection can be created with
 
 ```{r}
-ri_createCollection("/tmpZone/home/devel/tests")
+ri_createCollection("/tempZone/home/devel/tests")
 ```
+
+
+
+```{r echo=FALSE}
+# Let's clean all the stuff this vignettes creates
+
+library(reticulate)
+irods <- import("irods.session")
+env <- path.expand('~/.irods/irods_environment.json')
+session <- irods$iRODSSession(irods_env_file=env)
+session$collections$remove("/tempZone/home/devel/tests")
+rm(session)
+
+
+
+
+```
+
 
 
 
