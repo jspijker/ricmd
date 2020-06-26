@@ -15,22 +15,165 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(ricmd)
 ```
 
 # Introduction
 
- * What is iRODS
- * why this package  
- * uses and limitations  
+The integrated Rule Oriented Data System (iRODS) is an open source
+data management software. It is used by research organisations and
+governmental institutes and has an important role in their ever
+growing data services.
 
-## Rationale 
+This package provides an R user interface with iRODS and implements
+the basic functionality of working with iRODS collections and data
+objects from R. Whith this package it is possible to create, modify,
+and remove collections and data objects from an iRODS Zone. For data objects it
+is also possible to add, remove and modify meta data in the so called
+attribute-value-unit (AVU) tripples. For more information see the [iRODS
+documentation](https://irods.org/documentation/)
 
 
- * Data workflows / data science architecture
- * Seperate code and data  
+This package is based on the [python
+irodsclient](https://github.com/irods/python-irodsclient) and it calls
+[reticulate](https://cran.r-project.org/package=reticulate) to interact
+with this library.
 
-# Setup working environment
+All functions in this package start with the ri\_ prefix, this
+prevents hiding functions from other packages and makes your code more
+readable.
+
+
+# prerequisites
+
+This package requires that the python-irodsclient library is
+installed. It is developped and tested using python version >3. Use
+pip to install the library:
+
+```{}
+pip3 install python-irodsclient
+```
+
+This package uses the iRODS environment files in `~/.irods/`, these
+files should contain the user credentials needed to connect to iRODS.
+So it is up to the user to set up their iRODS environment before he or
+she can use this package. If the user can use the so called 'i
+commands', this package should also function properly.
+
+# Zones, collections, data objects and meta data
+
+To understand how to use this package a basic understanding of iRODS
+is needed. The short version to remember is: each iRODS system is a
+'zone', in these zones data collections exists and each data collection
+contains many data objects. Each data object contains meta data in so
+called Attribute-Value-Unit (AVU) tripples. There is a longer version
+but that's beyond the scope of this vignette, please see the [iRODS
+documentation](https://irods.org/documentation/).
+
+## Zones
+
+A Zone is an independent iRODS system which contains the data catalog
+and one or more iRODS servers. While an iRODS implementation can
+contain multiple zones, in this vignette we assume a single zone
+implementation.
+
+## Collections
+
+A Zone can contain on or more collections and each collection can
+contain one more sub collections. Collections are a way to store data
+in a hierarchical structure like directories or folders.
+
+This package uses a default collection, which you must set manually.
+If you manipulate (store/retrieve etc) your data objects, it is assumed
+that they exists in your default collection, unless you provide a specific
+collection in the function arguments.
+
+
+## Data objects
+
+A Collection can contain multiple data objects, like files in a folder or
+directory. Although somewhat different, a data object can be
+considered as a normal file. 
+
+## Meta data
+ 
+Meta data is stored in AVU tripples. Many objects in iRODS, like
+users, collections, or resources can contain meta data but this
+package only considers meta data associated with data objects.
+
+AVU triples must contain an attribute and value, unit is optional.
+Within iRODS it is possible to search and query data objects based on
+their values in the AVU triples. These search options are not yet
+implemented in this package.
+
+
+# Initialise an iRODS session
+
+
+So, now that we know the basics let's start with an iRODS session. We
+assume that your iRODS environment is set up properly and that you
+have the python iRODS client in place.
+
+To start an iRODS session from within R you exexcute the following
+commands:
+
+```{r}
+library(ricmd)
+ri_session()
+```
+
+Executing this command creates a hidden environment wich contains the
+iRODS configuration and the session object. This session object refers
+to the session class from the pyton library and contains all the methods
+for working with iRODS.
+
+After initiating the iRODS session one must set the default
+collection:
+
+```{r}
+ri_setCollection("/tempZone/home/devel")
+```
+
+The name of the collection always start with the name of the zone, in
+our case '/tempZone' (mind the '/' at the beginning). We use the
+standard collection from a default iRODS installation with a username
+'devel', hence 'home/devel'.
+
+This default collection can be changed anytime in your script. If you
+want check which collection is the default collection, then use:
+
+```{r}
+ri_getCollection()
+```
+
+# Creating a new collection
+
+A new data collection can be created with
+
+```{r}
+ri_createCollection("/tmpZone/home/devel/tests")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  * Session
  * Collection

@@ -45,3 +45,5 @@ inst/doc
 # skip prototype code
 prototype.R
 tmp/
+doc
+Meta
