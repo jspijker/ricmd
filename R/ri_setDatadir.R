@@ -16,9 +16,6 @@
 #'  and code. See the vignette of the `datafile` package for more
 #'  information.
 #' 
-#' 
-#' @importFrom datafile datafileInit
-#' 
 #' @export
 
 
