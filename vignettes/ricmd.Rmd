@@ -153,6 +153,231 @@ A new data collection can be created with
 ri_createCollection("/tempZone/home/devel/tests")
 ```
 
+The only argument of ri\_createCollection is the full path to the new
+collection. If this collection allready exists, an error will follow.
+
+Since we created the new collection inside our default collection, we
+can show it using the ri\_listSubCollections command:
+
+```{r}
+ri_listSubCollections()
+```
+
+To remove a collection, the ri\_removeCollection command can be used:
+
+```{r eval=FALSE}
+ri_removeCollection("/tempZone/home/devel/tests")
+
+```
+
+# Creating data objects
+
+## Data objects vs local files
+
+Data objects in iRODS can be regarded as files (although, technically
+no t completely true). One can store a local
+file from disk as data object into a data collection of iRODS. Also, a
+data object can be retrieved from iRODS and stored as file on the
+local disk. Storing and retrieving in iRODS are called put and get
+respectively. 
+
+By default the data object is stored in or retrieved from the default
+collection set by `ri\_setCollection`. A equivalent approach can be
+followed for files stored on disk. It is good practice to seperate
+data from code.This means that data is always written to a different
+location (directory) than your current working directory, which
+contains the code. Using the `ri\_setDatadir` function one can set the
+location where files are stored on the local file system and the ricmd
+package uses that directory by default.
+
+To demonstrate this, we first create a temporary data directory and
+store a data file in that directory:
+
+```{r}
+
+testDatadir <- file.path(tempdir(),'data')
+dir.create(testDatadir)
+
+x <- rnorm(10)
+saveRDS(x,file.path(testDatadir,"datafile.rds"))
+
+```
+
+We set this data directory as default location for local files
+
+```{r}
+ri_setDatadir(testDatadir)
+```
+
+
+## Store data objects
+
+
+For storing data objects into iRODS you can use the ri\_put command.
+In the next example we use the test collection created above as
+default collection.
+
+
+```{r eval=TRUE}
+ri_setCollection("/tempZone/home/devel/tests")
+ri_put(filename=file.path(testDatadir,"datafile.rds"))
+```
+
+This stores the datafile.rds file as object in the default collection.
+To see a list of stored objects the ri\_listDataObjects function is
+available
+
+```{r}
+ri_listDataObjects()
+```
+
+Overwriting and existing object is not allowed, this results in an
+error. Using the overwrite=TRUE argument, overwriting of objects can
+be forced
+
+```{r eval=TRUE}
+# results in an error
+try(ri_put(filename=file.path(testDatadir,"datafile.rds")))
+
+# this works
+ri_put(filename=file.path(testDatadir,"datafile.rds"),overwrite=TRUE)
+```
+
+Now that the data is stored in iRODS you can remove the local file if
+you want.
+
+```{r}
+unlink(file.path(testDatadir,"datafile.rds"))
+```
+
+
+
+## Retreive data objects
+
+To get (retrieve) the data object created in the last section, you use
+the `ri_get()` function. By default, this functions stores the file
+locally in the data directory defined above.
+
+```{r}
+ri_get("datafile.rds")
+```
+And now you can read and process the data
+
+```{r}
+x <- readRDS(file.path(testDatadir,"datafile.rds"))
+print(length(x))
+```
+
+I you want to store the file in an other location, or using a
+different filename, you can use the datadir and filename arguments of
+this function
+
+```{r eval=FALSE}
+ri_get("datafile.rds",datadir="/path/to/other/directory",
+    filename="differentFileName.rds")
+```
+
+The ri\_get does not overwrite existing files by default. If you want
+to get the same data object more than once you either overwrite the
+existing file or rename it
+
+```{r}
+# the file allready exists, so this results in an error
+try(ri_get("datafile.rds"))
+
+# overwrite te file
+ri_get("datafile.rds",overwrite=TRUE)
+
+# or use different file anme
+ri_get("datafile.rds",filename="datafile2.rds")
+```
+
+# Manage meta data
+
+In iRODS meta data, as AVU tripple, can be associated with users,
+collections and data objects. This package only supports meta data of
+data object. Other meta data is not supported (yet).
+
+To add meta data to an object, you use the ri\_metaAdd function. If we
+want to add meta data to the `datafile.rds` data object created above,
+we execute:
+
+```{r}
+ri_metaAdd(object="datafile.rds",attribute="attr1",value="val1")
+```
+In above command we assume that `datafile.rds` is in the default
+collection. For an AVU triple, you must provide an attribute and
+value. The unit is optional and defaults to NULL.
+
+If you want to add meta data to an object in a different collection,
+you must provide the collection argument:
+
+```{r eval=FALSE}
+ri_metaAdd(object="otherObject",attribute="attr1",value="val4",
+           collection="/zone/otherCollection")
+```
+
+While it is possible in iRODS to multiple attributes with the same
+name, this package does not support that. If an attribute allready
+exists, adding that attribute again results in an error. It is
+possible to overwrite using the overwrite argument:
+
+
+```{r}
+ri_metaAdd(object="datafile.rds",attribute="attr1",value="val2",
+        overwrite=TRUE)
+```
+
+With the ri\_getGet and ri\_metaGetAttr you can get respectively all the meta data
+AVU tripples or only a single AVU tripple for a specific attribute.
+
+```{r}
+# first add some more meta data
+ri_metaAdd(object="datafile.rds",attribute="attr2",value="val2")
+ri_metaAdd(object="datafile.rds",attribute="attr3",value="val3",unit="unit1")
+
+# get meta data
+meta <- ri_metaGet("datafile.rds")
+print(str(meta))
+
+```
+
+The ri\_metaGet returns a list were the first levels are the names of
+the attributes and the second level are the value and unit of each
+level. The third meta data attribute thus can be accessed as follows:
+
+```{r}
+meta$attr3$value
+meta$attr3$unit
+
+```
+To get a specific meta data attribute:
+
+```{r}
+ri_metaGetAtt(object="datafile.rds",attribute="attr3")
+
+```
+
+You can also delete meta triples from an object. To delete a single
+attribute:
+
+```{r}
+
+ri_metaRemoveAtt("datafile.rds","attr3")
+meta <- ri_metaGet("datafile.rds")
+print(str(meta))
+
+
+```
+
+Or, to delete everything
+
+```{r}
+ri_metaRemove("datafile.rds")
+meta <- ri_metaGet("datafile.rds")
+print(str(meta))
+
+```
 
 
 ```{r echo=FALSE}
@@ -164,43 +389,8 @@ env <- path.expand('~/.irods/irods_environment.json')
 session <- irods$iRODSSession(irods_env_file=env)
 session$collections$remove("/tempZone/home/devel/tests")
 rm(session)
-
-
-
+unlink(testDatadir,recursive=TRUE)
 
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- * Session
- * Collection
- * Data objects  
- * Files and data path  
- * Initialise  
-
-# Create, remove and select collections
-
-# Store, retrieve and remove data objects
-
-# Manage meta data
