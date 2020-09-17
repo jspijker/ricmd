@@ -8,29 +8,31 @@
 #' @param object name of data object
 #' @param attribute name of attribute
 #' @param value value of attribute
-#' @param unit unit of attribute, will be NULL if not provided
+#' @param units unit of attribute, will be NULL if not provided
 #' @param collection iRODS collection where data object resides
-#' @param overwrite should attribute be overwritting if allready exists
 #'
 #' iRODS uses AVU triples (attribute - value - unit) to store meta
 #' data to data objects, collections users etc. This function can be
-#' used to add meta data to data objects. For this function attribute
+#' used to add meta data to data objects. The attribute
 #' and value are obligatory. If no unit is provided, it defaults to
 #' NULL.
-#'
-#' If the attribute allready exists for a data object, this function
-#' will result in an error, unless overwrite=TRUE
+#
+#' An AVU triple must be an unique combination of attribute, value,
+#' and unit. If two tripples have the same attribute, the value must
+#' differ, or, if the tripples have the same attribute and value, then
+#' the unit must differ. 
 #'
 #' If no collection argument is provided, the default collection is
-#' assumed (see ri_setCollection).
-#'
+#' assumed (see ri_setCollection). If the AVU tripple allready exists,
+#' it is not overwritten, since the meta data is allready added to the
+#' object.
 #'
 #' @export
 
 
 
 ri_metaAdd <- function(object,attribute,value,collection=ri_getCollection(),
-                       unit=NULL,overwrite=FALSE) {
+                       units=NULL) {
 
 
     if(!is.character(object)) {
@@ -49,16 +51,20 @@ ri_metaAdd <- function(object,attribute,value,collection=ri_getCollection(),
         stop("ri_metaAdd: value is not character")
     }
 
-    if(!is.logical(overwrite)) {
-        stop("ri_metaAdd: overwrite is not logical")
-    }
-
-    if(!is.null(unit)) {
-        if(!is.character(unit)) {
-            stop("ri_metaAdd: unit is not character nor NULL")
+#     if(!is.logical(overwrite)) {
+#         stop("ri_metaAdd: overwrite is not logical")
+#     }
+# 
+#     when_exists_method <- pmatch(when_exists,c("error","overwrite","append"))
+#     if(is.na(when_exists_method)) {
+#         stop("ri_metaAdd: when_exists should be 'error', 'overwrite', or 'append'") 
+#     }
+# 
+    if(!is.null(units)) {
+        if(!is.character(units)) {
+            stop("ri_metaAdd: units is not character nor NULL")
         }
     }
-
 
     if(!ri_collectionExists(collection)) {
         stop("ri_metaAdd: collection does not exists")
@@ -68,25 +74,24 @@ ri_metaAdd <- function(object,attribute,value,collection=ri_getCollection(),
         stop("ri_metaAdd: object does not exists")
     }
 
-    if(ri_metaAttExists(object,attribute,collection)) {
-        if(overwrite) {
-            ri_metaRemoveAtt(object,attribute,collection)
-        } else {
-            stop("ri_metaAdd: attribute allready exists and overwrite=FALSE")
-        }
-    }
-
-    if(!ri_objectExists(object)) {
-        stop("ri_metaAdd: object does not exists")
-    }
-
+#     if(ri_metaAttExists(object,attribute,collection)) {
+#         if(when_exists_method==2) {
+#             ri_metaRemoveAtt(object,attribute,collection)
+#         } else {
+#             if(when_exists_method==1) {
+#                 stop("ri_metaAdd: attribute allready exists and overwrite=FALSE")
+#             }
+#         }
+#     }
+# 
     
-    session <- getSession()
-    objpath <- file.path(collection,object)
-
-    obj <- session$data_objects$get(objpath)
-    obj$metadata$add(attribute,value,unit)
-
+    avuStore(object,collection,attribute,value,units)
+    #     session <- getSession()
+    #     objpath <- file.path(collection,object)
+    # 
+    #     obj <- session$data_objects$get(objpath)
+    #     obj$metadata$add(attribute,value,units)
+    # 
 }
 
 
