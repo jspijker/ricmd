@@ -23,3 +23,22 @@ test_that("correct functioning",{
               destroySession()
 
 })
+
+test_that("test collection argument",{
+
+
+              newColl <- paste(testColl,"test1",sep="/")
+              newSubColl <- paste(newColl,"testSub1",sep="/")
+              ri_session()
+              session <- getSession()
+              ri_setCollection(testColl)
+              ri_createCollection(newColl)
+              ri_createCollection(newSubColl)
+
+              res <- ri_listSubCollections(collection=newColl)
+              expect_equal("testSub1",res)
+
+              ri_removeCollection(newColl)
+              destroySession()
+
+})

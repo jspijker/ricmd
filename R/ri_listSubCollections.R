@@ -16,13 +16,14 @@
 ri_listSubCollections <- function(collection=NULL) {
 
     if(is.null(collection)) {
-    cols <- getCollectionObjects()
+        collection <- ri_getCollection()
     } else {
         if (!is.character(collection)) {
-            stop("ri_listdataObjects: collection is not character")
+            stop("ri_listSubCollections: collection is not character")
         }
     }
 
+    cols <- getCollectionObjects(collection)
     l <- getObjects(cols$subcollections,"name")
     return(l)
 }
