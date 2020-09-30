@@ -23,6 +23,23 @@ yet
 Currently only the basic functions needed to store,retrieve and remove
 data objects from an iRODS collection are implemented. 
 
+# Install
+
+This package is not (yet) available on CRAN, you can install it
+directly from GitHub:
+
+```r
+remotes::install_github("jspijker/ricmd",build_vignettes=TRUE)
+```
+
+To read the vignette:
+
+```r
+vignette("ricmd")
+```
+
+
+
 # licence
 
 This package is publicly available under the [GPL 3.0

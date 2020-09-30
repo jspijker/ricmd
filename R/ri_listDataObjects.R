@@ -13,16 +13,13 @@
 #'
 #'
 
-ri_listDataObjects <- function(collection=NULL) {
+ri_listDataObjects <- function(collection=ri_getCollection()) {
 
-    if(is.null(collection)) {
-    cols <- getCollectionObjects()
-    } else {
-        if (!is.character(collection)) {
-            stop("ri_listdataObjects: collection is not character")
-        }
+    if (!is.character(collection)) {
+        stop("ri_listdataObjects: collection is not character")
     }
 
+    cols <- getCollectionObjects(collection)
     l <- getObjects(cols$data_objects,"name")
     return(l)
 }

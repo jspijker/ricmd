@@ -14,10 +14,9 @@ testCollection <- function() {
 
 
 
-getCollectionObjects <- function() {
+getCollectionObjects <- function(collection=ri_getCollection()) {
               
     session <- getSession()
-    collection <- ri_getCollection()
     cols <- session$collections$get(collection)
     return(cols)
 }
