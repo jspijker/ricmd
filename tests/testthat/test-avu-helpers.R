@@ -95,3 +95,32 @@ test_that("avuGet",{
 
 
 })
+
+test_that("avuRemove", {
+
+              ri_session()
+              session <- getSession()
+              ri_setCollection(testColl)
+              x <- rnorm (10)
+              fname.x <- tempfile()
+              saveRDS(x,fname.x)
+              ri_put(fname.x)
+              objname <- basename(fname.x)
+
+              avuStore(objname,testColl,attribute="attr1",value="val1",units="unit1")
+              expect_true(avuExists(objname,testColl,attribute="attr1",value="val1",units="unit1"))
+              avuRemove(objname,testColl,attribute="attr1",value="val1",units="unit1")
+              expect_false(avuExists(objname,testColl,attribute="attr1",value="val1",units="unit1"))
+
+
+              if(ri_objectExists(basename(fname.x))) {
+                  session$data_objects$unlink(paste0(testColl,"/",basename(fname.x)))
+              }
+
+              unlink(fname.x)
+              destroySession()
+
+
+
+
+})

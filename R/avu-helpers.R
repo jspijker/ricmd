@@ -53,4 +53,16 @@ avuGet <- function(object,collection) {
 
 }
 
+avuRemove <- function(object,collection,attribute,value,units=NULL) {
+    if(avuExists(object,collection,attribute,value,units)) {
+
+        session <- getSession()
+        objpath <- file.path(collection,object)
+
+        obj <- session$data_objects$get(objpath)
+        obj$metadata$remove(attribute,value,
+                            units)
+    }
+}
+
 
