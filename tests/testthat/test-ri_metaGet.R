@@ -42,10 +42,7 @@ test_that("proper functioning", {
               ri_metaAdd(objname,attribute="attr2",value="val2",unit="unit2")
 
               lst <- ri_metaGet(objname)
-              
-              lst_expect <- list(attr1=list(value="val1",unit=NULL),
-                                 attr2=list(value="val2",unit="unit2"))
-              expect_equal(lst,lst_expect)
+              expect_equal(lst$avu[[1]]$attribute,"attr1")
 
 
               if(ri_objectExists(basename(fname.x))) {

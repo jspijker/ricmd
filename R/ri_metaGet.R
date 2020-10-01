@@ -33,19 +33,7 @@ ri_metaGet <- function(object, collection=ri_getCollection()) {
         stop("ri_metaGet: object does not exists")
     }
 
-
-    session <- getSession()
-    objpath <- file.path(collection,object)
-
-    obj <- session$data_objects$get(objpath)
-    meta <- obj$metadata$items()
-
-    metalst <- list()
-    for (i in meta) {
-        items <- list(value=i$value,unit=i$units)
-        metalst[[i$name]] <- items
-    }
-
+    metalst <- avuGet(object,collection)
     return(metalst)
 
 }
