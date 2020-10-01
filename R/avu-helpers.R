@@ -24,9 +24,9 @@ avuExists <- function(object,collection,attribute,value,units=NULL) {
     valsidx <- which(vals==value)
     if(length(valsidx)>0) {
         uns <- as.data.frame(t(sapply(key,"[")))$units
-        if(is.null(units) && length(units)!=length(valsidx))
+        if(is.null(units) && length(unlist(uns))!=length(valsidx))
             doesExist <- TRUE 
-        if(any(uns==units)) {
+        if(any(unlist(uns)==units)) {
             doesExist <- TRUE
         }
     }

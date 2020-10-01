@@ -1,49 +1,61 @@
-#' Remove all meta data from a data object 
+#' Remove meta data from an object
 #'
-#' Removes all attribute-value-unit triples from an iRODS data object
+#' Removes an Attribute-Value-Units (AVU) triple from an object
 #'
 #'
 #' @param object name of data object
-#' @param collection iRODS collection where data object resides
+#' @param attribute name of attribute
+#' @param value value of attribute
+#' @param units unit of attribute, will be NULL if not provided
+#' @param collection iRODS collection where data object resides, if
+#' not provided, the defaul collection will be used
 #'
-#'
-#' This function removes all AVU tripples from an iRODS object.
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
+#' This function removes an AVU tripple from an iRODS object.
 #'
 #' @export
 
 
 
-ri_metaRemove <- function(object,collection=ri_getCollection()) {
+ri_metaRemove <- function(object,attribute,value,collection=ri_getCollection(),
+                          units=NULL) {
 
     if(!is.character(object)) {
-        stop("ri_metaAdd: object is not character")
+        stop("ri_metaRemove: object is not character")
     }
+
+    if(!ri_objectExists(object,collection))
+        stop("rmetaRemovei_metaAdd: object does not exists")
 
     if(!is.character(collection)) {
-        stop("ri_metaAdd: collection is not character")
+        stop("rmetaRemovei_metaAdd: collection is not character")
     }
 
-    metalst <- ri_metaGet(object,collection)
-
-    session <- getSession()
-    objpath <- file.path(collection,object)
-
-    obj <- session$data_objects$get(objpath)
-    for(i in names(metalst)) {
-        obj$metadata$remove(i,metalst[[i]]$value,
-                            metalst[[i]]$unit)
+    if(!is.character(attribute)) {
+        stop("rmetaRemovei_metaAdd: attribute is not character")
     }
+
+    if(!is.character(value)) {
+        stop("rmetaRemovei_metaAdd: value is not character")
+    }
+
+    if(!is.null(units)) {
+        if(!is.character(units)) {
+            stop("rmetaRemovei_metaAdd: units is not character nor NULL")
+        }
+    }
+
+#    metalst <- ri_metaGet(object,collection)
+
+#    session <- getSession()
+#    objpath <- file.path(collection,object)
+
+#    obj <- session$data_objects$get(objpath)
+#    for(i in names(metalst)) {
+#        obj$metadata$remove(i,metalst[[i]]$value,
+#                            metalst[[i]]$unit)
+#    }
+
+    avuRemove(object,collection,attribute,value,units)
     return()
 
 }

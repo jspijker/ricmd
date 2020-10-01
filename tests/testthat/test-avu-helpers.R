@@ -48,6 +48,8 @@ test_that("avuExists", {
               expect_true(avuExists(objname,testColl,attribute="attr1",value="val1"))
               avuStore(objname,testColl,attribute="attr2",value="val2",units="unit1")
               expect_true(avuExists(objname,testColl,attribute="attr2",value="val2",units="unit1"))
+              avuStore(objname,testColl,attribute="attr3",value="val3",units="unit3")
+              expect_false(avuExists(objname,testColl,attribute="attr3",value="val3"))
 
               expect_false(avuExists(objname,testColl,attribute="attr1",value="val99"))
               
@@ -107,11 +109,16 @@ test_that("avuRemove", {
               ri_put(fname.x)
               objname <- basename(fname.x)
 
+              avuStore(objname,testColl,attribute="attr1",value="val1")
               avuStore(objname,testColl,attribute="attr1",value="val1",units="unit1")
               expect_true(avuExists(objname,testColl,attribute="attr1",value="val1",units="unit1"))
               avuRemove(objname,testColl,attribute="attr1",value="val1",units="unit1")
               expect_false(avuExists(objname,testColl,attribute="attr1",value="val1",units="unit1"))
 
+              avuStore(objname,testColl,attribute="attr1",value="val1",units="unit1")
+              avuRemove(objname,testColl,attribute="attr1",value="val1")
+              expect_false(avuExists(objname,testColl,attribute="attr1",value="val1"))
+              expect_true(avuExists(objname,testColl,attribute="attr1",value="val1",units="unit1"))
 
               if(ri_objectExists(basename(fname.x))) {
                   session$data_objects$unlink(paste0(testColl,"/",basename(fname.x)))
@@ -119,8 +126,5 @@ test_that("avuRemove", {
 
               unlink(fname.x)
               destroySession()
-
-
-
 
 })
