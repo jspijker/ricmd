@@ -113,16 +113,6 @@ commands:
 
 ```r
 library(ricmd)
-#> Loading required package: reticulate
-#> loading ricmd python3 environment
-#> 
-#> python:         /usr/bin/python3
-#> libpython:      /usr/lib/python3.5/config-3.5m-x86_64-linux-gnu/libpython3.5.so
-#> pythonhome:     //usr://usr
-#> version:        3.5.3 (default, Sep 27 2018, 17:25:39)  [GCC 6.3.0 20170516]
-#> numpy:           [NOT FOUND]
-#> 
-#> NOTE: Python version was forced by use_python function
 ri_session()
 ```
 
@@ -210,6 +200,7 @@ store a data file in that directory:
 
 testDatadir <- file.path(tempdir(),'data')
 dir.create(testDatadir)
+#> Warning in dir.create(testDatadir): '/tmp/Rtmpv8iwoB/data' already exists
 
 x <- rnorm(10)
 saveRDS(x,file.path(testDatadir,"datafile.rds"))
@@ -323,9 +314,14 @@ ri_get("datafile.rds",filename="datafile2.rds")
 
 In iRODS meta data, as AVU tripple, can be associated with users,
 collections and data objects. This package only supports meta data of
-data object. Other meta data is not supported (yet).
+data objects. Meta data of collections, users etc. is not supported.
 
-To add meta data to an object, you use the ri\_metaAdd function. If we
+An AVU triple must be an unique combination of attribute, value,
+and unit. If two tripples have the same attribute, the value must
+differ, or, if the tripples have the same attribute and value, then
+the unit must differ. 
+
+To add meta data to an object, you use the ri\_metaAdd function.  If we
 want to add meta data to the `datafile.rds` data object created above,
 we execute:
 
@@ -346,98 +342,75 @@ ri_metaAdd(object="otherObject",attribute="attr1",value="val4",
            collection="/zone/otherCollection")
 ```
 
-While it is possible in iRODS to multiple attributes with the same
-name, this package does not support that. If an attribute allready
-exists, adding that attribute again results in an error. It is
-possible to overwrite using the overwrite argument:
-
-
-
-```r
-ri_metaAdd(object="datafile.rds",attribute="attr1",value="val2",
-        overwrite=TRUE)
-```
-
-With the ri\_getGet and ri\_metaGetAttr you can get respectively all the meta data
-AVU tripples or only a single AVU tripple for a specific attribute.
+With the ri\_metaGet you can get all the meta data from an object
+using the internal representation in which meta data is stored in this
+package.
 
 
 ```r
 # first add some more meta data
 ri_metaAdd(object="datafile.rds",attribute="attr2",value="val2")
-ri_metaAdd(object="datafile.rds",attribute="attr3",value="val3",unit="unit1")
+ri_metaAdd(object="datafile.rds",attribute="attr3",value="val3",units="unit1")
 
 # get meta data
 meta <- ri_metaGet("datafile.rds")
 print(str(meta))
-#> List of 3
-#>  $ attr1:List of 2
-#>   ..$ value: chr "val2"
-#>   ..$ unit : NULL
-#>  $ attr2:List of 2
-#>   ..$ value: chr "val2"
-#>   ..$ unit : NULL
-#>  $ attr3:List of 2
-#>   ..$ value: chr "val3"
-#>   ..$ unit : chr "unit1"
+#> List of 2
+#>  $ avu:List of 3
+#>   ..$ :List of 3
+#>   .. ..$ attribute: chr "attr1"
+#>   .. ..$ value    : chr "val1"
+#>   .. ..$ units    : NULL
+#>   ..$ :List of 3
+#>   .. ..$ attribute: chr "attr2"
+#>   .. ..$ value    : chr "val2"
+#>   .. ..$ units    : NULL
+#>   ..$ :List of 3
+#>   .. ..$ attribute: chr "attr3"
+#>   .. ..$ value    : chr "val3"
+#>   .. ..$ units    : chr "unit1"
+#>  $ key:List of 3
+#>   ..$ attr1: num 1
+#>   ..$ attr2: num 2
+#>   ..$ attr3: num 3
 #> NULL
 ```
 
-The ri\_metaGet returns a list were the first levels are the names of
-the attributes and the second level are the value and unit of each
-level. The third meta data attribute thus can be accessed as follows:
+The ri\_metaGet returns a nested list with AVU tripples and keys. The
+list element called 'avu' contains a list with the  AVU triple, containing
+named elements for attribute, value and units. Units are by default NULL,
+and the list thus contains NULL values. The list element called 'keys'
+is and index with the names of the attributes and the elements of the
+'avu' list in which these attributes occur.
+
+In a future version of this package a more human readable format for
+meta data is anticipated.
 
 
-```r
-meta$attr3$value
-#> [1] "val3"
-meta$attr3$unit
-#> [1] "unit1"
-```
-To get a specific meta data attribute:
-
-
-```r
-ri_metaGetAtt(object="datafile.rds",attribute="attr3")
-#> $value
-#> [1] "val3"
-#> 
-#> $unit
-#> [1] "unit1"
-```
-
-You can also delete meta triples from an object. To delete a single
-attribute:
+You can also delete meta triples from an object.
 
 
 ```r
 
-ri_metaRemoveAtt("datafile.rds","attr3")
+ri_metaRemove("datafile.rds",attribute="attr3",value="val3",units="unit1")
 #> NULL
 meta <- ri_metaGet("datafile.rds")
 print(str(meta))
 #> List of 2
-#>  $ attr1:List of 2
-#>   ..$ value: chr "val2"
-#>   ..$ unit : NULL
-#>  $ attr2:List of 2
-#>   ..$ value: chr "val2"
-#>   ..$ unit : NULL
+#>  $ avu:List of 2
+#>   ..$ :List of 3
+#>   .. ..$ attribute: chr "attr1"
+#>   .. ..$ value    : chr "val1"
+#>   .. ..$ units    : NULL
+#>   ..$ :List of 3
+#>   .. ..$ attribute: chr "attr2"
+#>   .. ..$ value    : chr "val2"
+#>   .. ..$ units    : NULL
+#>  $ key:List of 2
+#>   ..$ attr1: num 1
+#>   ..$ attr2: num 2
 #> NULL
 ```
-
-Or, to delete everything
-
-
-```r
-ri_metaRemove("datafile.rds")
-#> NULL
-meta <- ri_metaGet("datafile.rds")
-print(str(meta))
-#>  list()
-#> NULL
-```
-
 
 
 

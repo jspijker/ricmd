@@ -4,7 +4,7 @@
 \alias{ri_listDataObjects}
 \title{List data objects wihtin collection}
 \usage{
-ri_listDataObjects(collection = NULL)
+ri_listDataObjects(collection = ri_getCollection())
 }
 \arguments{
 \item{collection}{if NULL this is the default collection, either

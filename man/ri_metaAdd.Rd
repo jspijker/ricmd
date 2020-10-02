@@ -9,8 +9,7 @@ ri_metaAdd(
   attribute,
   value,
   collection = ri_getCollection(),
-  unit = NULL,
-  overwrite = FALSE
+  units = NULL
 )
 }
 \arguments{
@@ -20,23 +19,24 @@ ri_metaAdd(
 
 \item{value}{value of attribute}
 
-\item{collection}{iRODS collection where data object resides}
-
-\item{unit}{unit of attribute, will be NULL if not provided}
-
-\item{overwrite}{should attribute be overwritting if allready exists
+\item{collection}{iRODS collection where data object resides
 
 iRODS uses AVU triples (attribute - value - unit) to store meta
 data to data objects, collections users etc. This function can be
-used to add meta data to data objects. For this function attribute
+used to add meta data to data objects. The attribute
 and value are obligatory. If no unit is provided, it defaults to
 NULL.
-
-If the attribute allready exists for a data object, this function
-will result in an error, unless overwrite=TRUE
+An AVU triple must be an unique combination of attribute, value,
+and unit. If two tripples have the same attribute, the value must
+differ, or, if the tripples have the same attribute and value, then
+the unit must differ. 
 
 If no collection argument is provided, the default collection is
-assumed (see ri_setCollection).}
+assumed (see ri_setCollection). If the AVU tripple allready exists,
+it is not overwritten, since the meta data is allready added to the
+object.}
+
+\item{units}{unit of attribute, will be NULL if not provided}
 }
 \description{
 Adds meta data to an iRODS data object. Meta data consists of
