@@ -46,10 +46,13 @@ test_that("avuExists", {
 
               avuStore(objname,testColl,attribute="attr1",value="val1")
               expect_true(avuExists(objname,testColl,attribute="attr1",value="val1"))
+              expect_false(avuExists(objname,testColl,attribute="attr1",value="val1",units="unit99"))
+
               avuStore(objname,testColl,attribute="attr2",value="val2",units="unit1")
               expect_true(avuExists(objname,testColl,attribute="attr2",value="val2",units="unit1"))
               avuStore(objname,testColl,attribute="attr3",value="val3",units="unit3")
               expect_false(avuExists(objname,testColl,attribute="attr3",value="val3"))
+              expect_true(avuExists(objname,testColl,attribute="attr3",value="val3",units="unit3"))
 
               expect_false(avuExists(objname,testColl,attribute="attr1",value="val99"))
               
@@ -82,10 +85,13 @@ test_that("avuGet",{
               ri_put(fname.x)
               objname <- basename(fname.x)
 
+              avuStore(objname,testColl,attribute="attr1",value="val1")
               avuStore(objname,testColl,attribute="attr2",value="val2",units="unit1")
               l <- avuGet(object=objname,collection=testColl)
-              expect_true(l$avu[[1]]$attribute=="attr2")
-              expect_true(l$key$attr2==1)
+              expect_true(l$avu[[1]]$attribute=="attr1")
+              expect_true(is.na(l$avu[[1]]$units))
+              expect_true(l$avu[[2]]$attribute=="attr2")
+              expect_true(l$key$attr2==2)
 
 
               if(ri_objectExists(basename(fname.x))) {
@@ -128,3 +134,37 @@ test_that("avuRemove", {
               destroySession()
 
 })
+
+
+
+test_that("avu2df", {
+
+              ri_session()
+              session <- getSession()
+              ri_setCollection(testColl)
+              x <- rnorm (10)
+              fname.x <- tempfile()
+              saveRDS(x,fname.x)
+              objname <- basename(fname.x)
+              ri_put(fname.x)
+
+              ri_metaAdd(objname,attribute="attr1",value="val1")
+              ri_metaAdd(objname,attribute="attr2",value="val2",unit="unit2")
+
+              lst <- avuGet(objname,testColl)
+              lst.df <- avu2df(lst)
+              expect.df <- data.frame(attribute=c("attr1","attr2"),
+                                      value=c("val1","val2"),
+                                      units=c(NA,"unit2"),stringsAsFactors=FALSE)
+
+              expect_equal(lst.df,expect.df)
+
+              if(ri_objectExists(basename(fname.x))) {
+                  session$data_objects$unlink(paste0(testColl,"/",basename(fname.x)))
+              }
+
+              unlink(fname.x)
+              destroySession()
+
+})
+

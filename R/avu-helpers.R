@@ -24,9 +24,9 @@ avuExists <- function(object,collection,attribute,value,units=NULL) {
     valsidx <- which(vals==value)
     if(length(valsidx)>0) {
         uns <- as.data.frame(t(sapply(key,"[")))$units
-        if(is.null(units) && length(unlist(uns))!=length(valsidx))
+        if(is.null(units) && any(is.na(uns)))
             doesExist <- TRUE 
-        if(any(unlist(uns)==units)) {
+        if(any(na.omit(unlist(uns))==units)) {
             doesExist <- TRUE
         }
     }
@@ -43,9 +43,11 @@ avuGet <- function(object,collection) {
         ndx <- length(avulst$avu)+1
         avulst$avu[[ndx]] <- list(attribute=i$name,
                                    value=i$value,
-                                   units=i$units)
+                                   units=ifelse(is.null(i$units),NA,i$units))
         avulst$key[[i$name]] <- append(avulst$key[[i$name]],ndx)
     }
+    attr(avulst,"object") <- object
+    attr(avulst,"collection") <- collection
     return(avulst)
 
 
@@ -65,4 +67,14 @@ avuRemove <- function(object,collection,attribute,value,units=NULL) {
     }
 }
 
+
+avu2df <- function(l) {
+
+    res <-  as.data.frame(t(matrix(unlist(l$avu),nrow=3)),stringsAsFactors=FALSE)
+    names(res) <- c("attribute","value","units")
+    attr(res,"object") <- attr(l,"object")
+    attr(res,"collection") <- attr(l,"collection")
+    return(res)
+
+}
 
