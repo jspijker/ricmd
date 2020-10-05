@@ -33,7 +33,9 @@ ri_metaGet <- function(object, collection=ri_getCollection()) {
         stop("ri_metaGet: object does not exists")
     }
 
-    metalst <- avuGet(object,collection)
-    return(metalst)
+    lst <- avuGet(object,collection)
+    lst.df <- avu2df(lst)
+
+    return(lst.df)
 
 }

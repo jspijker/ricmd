@@ -153,9 +153,12 @@ test_that("avu2df", {
 
               lst <- avuGet(objname,testColl)
               lst.df <- avu2df(lst)
+
               expect.df <- data.frame(attribute=c("attr1","attr2"),
                                       value=c("val1","val2"),
                                       units=c(NA,"unit2"),stringsAsFactors=FALSE)
+              attr(expect.df,"object") <- objname
+              attr(expect.df,"collection") <- testColl
 
               expect_equal(lst.df,expect.df)
 
