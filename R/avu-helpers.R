@@ -14,8 +14,14 @@ avuStore <- function(object,collection,attribute,value,units=NULL) {
 
 avuExists <- function(object,collection,attribute,value,units=NULL) {
 
-    doesExist <- FALSE
     l <- avuGet(object,collection)
+    doesExist <- avuExistsLst(l,attribute,value,units)
+    return(doesExist)
+}
+
+avuExistsLst <- function(l,attribute,value,units=NULL) {
+
+    doesExist <- FALSE
     if(length(l$key[[attribute]])==0) {
         return(doesExist)
     }
@@ -32,6 +38,7 @@ avuExists <- function(object,collection,attribute,value,units=NULL) {
     }
     return(doesExist)
 }
+
 
 avuGet <- function(object,collection) {
 
