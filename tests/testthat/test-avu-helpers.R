@@ -75,9 +75,6 @@ test_that("avuExists", {
 
 
 test_that("avuExistsLst",{
-              # l <- list(avu=list(list(attribute="key1",value="val1",units="unit1"),
-              #                    list(attribute="key2",value="val2",units=NA)),
-              #           key=list(key1=1,key2=2))
               l <- default.lst
               expect_true(avuExistsLst(l,attribute="key1",value="val1",units="unit1"))
               expect_false(avuExistsLst(l,attribute="key1",value="val1"))

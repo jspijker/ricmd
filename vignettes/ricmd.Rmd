@@ -200,7 +200,6 @@ store a data file in that directory:
 
 testDatadir <- file.path(tempdir(),'data')
 dir.create(testDatadir)
-#> Warning in dir.create(testDatadir): '/tmp/Rtmpv8iwoB/data' already exists
 
 x <- rnorm(10)
 saveRDS(x,file.path(testDatadir,"datafile.rds"))
@@ -342,9 +341,11 @@ ri_metaAdd(object="otherObject",attribute="attr1",value="val4",
            collection="/zone/otherCollection")
 ```
 
-With the ri\_metaGet you can get all the meta data from an object
-using the internal representation in which meta data is stored in this
-package.
+With the ri\_metaGet you can get all the meta data from an object as
+a data.frame with attribute, value, and units fields. The data.frame
+contains a row for each attribute existing in the meta data. The
+data.frame gives NA values for units which are NULL.
+
 
 
 ```r
@@ -354,38 +355,12 @@ ri_metaAdd(object="datafile.rds",attribute="attr3",value="val3",units="unit1")
 
 # get meta data
 meta <- ri_metaGet("datafile.rds")
-print(str(meta))
-#> List of 2
-#>  $ avu:List of 3
-#>   ..$ :List of 3
-#>   .. ..$ attribute: chr "attr1"
-#>   .. ..$ value    : chr "val1"
-#>   .. ..$ units    : NULL
-#>   ..$ :List of 3
-#>   .. ..$ attribute: chr "attr2"
-#>   .. ..$ value    : chr "val2"
-#>   .. ..$ units    : NULL
-#>   ..$ :List of 3
-#>   .. ..$ attribute: chr "attr3"
-#>   .. ..$ value    : chr "val3"
-#>   .. ..$ units    : chr "unit1"
-#>  $ key:List of 3
-#>   ..$ attr1: num 1
-#>   ..$ attr2: num 2
-#>   ..$ attr3: num 3
-#> NULL
+print(meta)
+#>   attribute value units
+#> 1     attr1  val1  <NA>
+#> 2     attr2  val2  <NA>
+#> 3     attr3  val3 unit1
 ```
-
-The ri\_metaGet returns a nested list with AVU tripples and keys. The
-list element called 'avu' contains a list with the  AVU triple, containing
-named elements for attribute, value and units. Units are by default NULL,
-and the list thus contains NULL values. The list element called 'keys'
-is and index with the names of the attributes and the elements of the
-'avu' list in which these attributes occur.
-
-In a future version of this package a more human readable format for
-meta data is anticipated.
-
 
 You can also delete meta triples from an object.
 
@@ -395,21 +370,10 @@ You can also delete meta triples from an object.
 ri_metaRemove("datafile.rds",attribute="attr3",value="val3",units="unit1")
 #> NULL
 meta <- ri_metaGet("datafile.rds")
-print(str(meta))
-#> List of 2
-#>  $ avu:List of 2
-#>   ..$ :List of 3
-#>   .. ..$ attribute: chr "attr1"
-#>   .. ..$ value    : chr "val1"
-#>   .. ..$ units    : NULL
-#>   ..$ :List of 3
-#>   .. ..$ attribute: chr "attr2"
-#>   .. ..$ value    : chr "val2"
-#>   .. ..$ units    : NULL
-#>  $ key:List of 2
-#>   ..$ attr1: num 1
-#>   ..$ attr2: num 2
-#> NULL
+print(meta)
+#>   attribute value units
+#> 1     attr1  val1  <NA>
+#> 2     attr2  val2  <NA>
 ```
 
 
