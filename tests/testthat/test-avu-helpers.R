@@ -32,6 +32,33 @@ test_that("avuStore", {
 
 })
 
+test_that("avuStoreLst",{
+
+              ri_session()
+              session <- getSession()
+              ri_setCollection(testColl)
+              x <- rnorm (10)
+              fname.x <- tempfile()
+              saveRDS(x,fname.x)
+              ri_put(fname.x)
+              objname <- basename(fname.x)
+
+              l <- default.lst
+              avuStoreLst(objname,testColl,l)
+
+              expect_true(avuExists(objname,testColl,attribute="key1",value="val1",units="unit1"))
+              expect_false(avuExists(objname,testColl,attribute="key1",value="val1"))
+              expect_true(avuExists(objname,testColl,attribute="key2",value="val2"))
+
+              if(ri_objectExists(basename(fname.x))) {
+                  session$data_objects$unlink(paste0(testColl,"/",basename(fname.x)))
+              }
+
+              unlink(fname.x)
+              destroySession()
+
+})
+
 
 test_that("avuExists", {
 
@@ -143,6 +170,18 @@ test_that("avuRemove", {
               unlink(fname.x)
               destroySession()
 
+})
+
+
+test_that("avuAddLst",{
+              l <- default.lst
+              l <- avuAddLst(l,attribute="key3",value="val3")
+              l <- avuAddLst(l,attribute="key4",value="val4",units="unit4")
+
+              expect_true(avuExistsLst(l,attribute="key3",value="val3"))
+              expect_false(avuExistsLst(l,attribute="key3",value="val3",units="unit3"))
+              expect_false(avuExistsLst(l,attribute="key4",value="val4"))
+              expect_true(avuExistsLst(l,attribute="key4",value="val4",units="unit4"))
 })
 
 

@@ -12,6 +12,24 @@ avuStore <- function(object,collection,attribute,value,units=NULL) {
 }
 
 
+avuStoreLst <- function(object,collection,l){
+
+    l.obj <- avuGet(object,collection)
+    for(i in l$avu) {
+        if(!avuExistsLst(l.obj,attribute=i$attribute,value=i$value,unit=i$unit)) {
+            if(is.na(i$units)) {
+                avuStore(object,collection,attribute=i$attribute,
+                         value=i$value)
+            } else {
+                avuStore(object,collection,attribute=i$attribute,
+                         value=i$value,units=i$units)
+            }
+        }
+    }
+}
+
+
+
 avuExists <- function(object,collection,attribute,value,units=NULL) {
 
     l <- avuGet(object,collection)
@@ -21,6 +39,7 @@ avuExists <- function(object,collection,attribute,value,units=NULL) {
 
 avuExistsLst <- function(l,attribute,value,units=NULL) {
 
+    if(is.null(units)) units <- NA
     doesExist <- FALSE
     if(length(l$key[[attribute]])==0) {
         return(doesExist)
@@ -30,9 +49,9 @@ avuExistsLst <- function(l,attribute,value,units=NULL) {
     valsidx <- which(vals==value)
     if(length(valsidx)>0) {
         uns <- as.data.frame(t(sapply(key,"[")))$units
-        if(is.null(units) && any(is.na(uns)))
+        if(is.na(units) && any(is.na(uns)))
             doesExist <- TRUE 
-        if(any(na.omit(unlist(uns))==units)) {
+        if(!is.na(units)&&any(na.omit(unlist(uns))==units)) {
             doesExist <- TRUE
         }
     }
@@ -72,6 +91,28 @@ avuRemove <- function(object,collection,attribute,value,units=NULL) {
         obj$metadata$remove(attribute,value,
                             units)
     }
+}
+
+avuAddLst <- function(l,attribute,value,units=NA){
+
+    if(avuExistsLst(l,attribute,value,units)) {
+        avulst <- l
+    } else {
+        avulst <- list(avu=list(list(attribute=attribute,value=value,
+                                     units=ifelse(is.null(units),NA,units))),
+                       key=list())
+        avulst$key[[attribute]] <- 1
+        for (i in l$avu) {
+            ndx <- length(avulst$avu)+1
+            avulst$avu[[ndx]] <- list(attribute=i$attribute,
+                                      value=i$value,
+                                      units=ifelse(is.null(i$units),NA,i$units))
+            avulst$key[[i$attribute]] <- append(avulst$key[[i$attribute]],ndx)
+        }
+    }
+
+    return(avulst)
+
 }
 
 
