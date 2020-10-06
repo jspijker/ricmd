@@ -1,6 +1,10 @@
+######################################################################
+# These are internal helper functions for operations with iRODS
+# collections
+######################################################################
 
 testCollection <- function() {
-
+    # test if default collection is set (e.g. using ri_setCollection)
 
     coll <- get("collection",env=.ricmdEnv)
     res <- if(is.na(coll)) {
@@ -15,6 +19,7 @@ testCollection <- function() {
 
 
 getCollectionObjects <- function(collection=ri_getCollection()) {
+    # get all subcollections within a collection
               
     session <- getSession()
     cols <- session$collections$get(collection)
@@ -23,6 +28,7 @@ getCollectionObjects <- function(collection=ri_getCollection()) {
 
 
 getObjects <- function(x,obj) {
+    # unlist function for a data_objects object
     res <- unlist(lapply(x,FUN=function(x) return(x[[obj]])))
     return(res)
 }

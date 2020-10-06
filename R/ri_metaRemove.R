@@ -44,16 +44,6 @@ ri_metaRemove <- function(object,attribute,value,collection=ri_getCollection(),
         }
     }
 
-#    metalst <- ri_metaGet(object,collection)
-
-#    session <- getSession()
-#    objpath <- file.path(collection,object)
-
-#    obj <- session$data_objects$get(objpath)
-#    for(i in names(metalst)) {
-#        obj$metadata$remove(i,metalst[[i]]$value,
-#                            metalst[[i]]$unit)
-#    }
 
     avuRemove(object,collection,attribute,value,units)
     return()

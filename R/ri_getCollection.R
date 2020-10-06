@@ -3,14 +3,7 @@
 #' This function returns the default IRODS collection set with
 #' ri_setCollection.
 #'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
+#' This function doesn't have any arguments
 #'
 #' @export
 

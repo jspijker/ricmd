@@ -42,18 +42,6 @@ ri_metaExists <- function(object,attribute,value,units=NULL,
         }
     }
 
-    #     session <- getSession()
-    #     objpath <- file.path(collection,object)
-    # 
-    #     obj <- session$data_objects$get(objpath)
-    # 
-    #     res <- try(obj$metadata$get_one(attribute),silent=TRUE)
-    #     if(any(class(res)=="try-error")) {
-    #         return(FALSE)
-    #     } else {
-    #         return(TRUE)
-    #     }
-
     res <- avuExists(object,collection,attribute,value,units)
     return(res)
 

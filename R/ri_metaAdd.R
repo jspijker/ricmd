@@ -51,15 +51,6 @@ ri_metaAdd <- function(object,attribute,value,collection=ri_getCollection(),
         stop("ri_metaAdd: value is not character")
     }
 
-#     if(!is.logical(overwrite)) {
-#         stop("ri_metaAdd: overwrite is not logical")
-#     }
-# 
-#     when_exists_method <- pmatch(when_exists,c("error","overwrite","append"))
-#     if(is.na(when_exists_method)) {
-#         stop("ri_metaAdd: when_exists should be 'error', 'overwrite', or 'append'") 
-#     }
-# 
     if(!is.null(units)) {
         if(!is.character(units)) {
             stop("ri_metaAdd: units is not character nor NULL")
@@ -74,24 +65,8 @@ ri_metaAdd <- function(object,attribute,value,collection=ri_getCollection(),
         stop("ri_metaAdd: object does not exists")
     }
 
-#     if(ri_metaAttExists(object,attribute,collection)) {
-#         if(when_exists_method==2) {
-#             ri_metaRemoveAtt(object,attribute,collection)
-#         } else {
-#             if(when_exists_method==1) {
-#                 stop("ri_metaAdd: attribute allready exists and overwrite=FALSE")
-#             }
-#         }
-#     }
-# 
     
     avuStore(object,collection,attribute,value,units)
-    #     session <- getSession()
-    #     objpath <- file.path(collection,object)
-    # 
-    #     obj <- session$data_objects$get(objpath)
-    #     obj$metadata$add(attribute,value,units)
-    # 
 }
 
 

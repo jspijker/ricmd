@@ -1,6 +1,12 @@
-#
+######################################################################
+# This are helper functions for manipulation of avu-triples. These
+# function either operates directly on the iRODS data object or
+# manipulate an 'avu-triple list. This list is the internal
+# representation of the avu-triple meta data from an iRODS object.
+######################################################################
 
 avuStore <- function(object,collection,attribute,value,units=NULL) {
+    # Stores an avu triple for a data object
 
     session <- getSession()
     objpath <- file.path(collection,object)
@@ -13,6 +19,7 @@ avuStore <- function(object,collection,attribute,value,units=NULL) {
 
 
 avuStoreLst <- function(object,collection,l){
+    # stores a list of avu-triples to a data object
 
     l.obj <- avuGet(object,collection)
     for(i in l$avu) {
@@ -31,6 +38,7 @@ avuStoreLst <- function(object,collection,l){
 
 
 avuExists <- function(object,collection,attribute,value,units=NULL) {
+    # check if an avu-tripple allready exists.
 
     l <- avuGet(object,collection)
     doesExist <- avuExistsLst(l,attribute,value,units)
@@ -38,6 +46,7 @@ avuExists <- function(object,collection,attribute,value,units=NULL) {
 }
 
 avuExistsLst <- function(l,attribute,value,units=NULL) {
+    # check if avu-triple allready exists in an avu-list
 
     if(is.null(units)) units <- NA
     doesExist <- FALSE
@@ -60,6 +69,8 @@ avuExistsLst <- function(l,attribute,value,units=NULL) {
 
 
 avuGet <- function(object,collection) {
+    # get all avu-tripples from a data object, store the avu-tripples
+    # in a list
 
     session <- getSession()
     obj <- session$data_objects$get(file.path(collection,object))
@@ -82,6 +93,8 @@ avuGet <- function(object,collection) {
 }
 
 avuRemove <- function(object,collection,attribute,value,units=NULL) {
+    # remove an avu tripple from a data object
+
     if(avuExists(object,collection,attribute,value,units)) {
 
         session <- getSession()
@@ -94,6 +107,7 @@ avuRemove <- function(object,collection,attribute,value,units=NULL) {
 }
 
 avuAddLst <- function(l,attribute,value,units=NA){
+    # add an avu-triple to a list with avu-tripples
 
     if(avuExistsLst(l,attribute,value,units)) {
         avulst <- l
@@ -117,6 +131,8 @@ avuAddLst <- function(l,attribute,value,units=NA){
 
 
 avu2df <- function(l) {
+    # transform a list with avu triples into a more human readable
+    # data.frame
 
     res <-  as.data.frame(t(matrix(unlist(l$avu),nrow=3)),stringsAsFactors=FALSE)
     names(res) <- c("attribute","value","units")

@@ -10,3 +10,6 @@ ri_getCollection()
 This function returns the default IRODS collection set with
 ri_setCollection.
 }
+\details{
+This function doesn't have any arguments
+}

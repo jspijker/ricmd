@@ -1,4 +1,9 @@
+######################################################################
+# Helper function for session management
+######################################################################
+
 getSession <- function() {
+    # get session object
 
     if(!testSession())  stop("session does not exists")
     s <- get("session",env=.ricmdEnv)
@@ -7,6 +12,7 @@ getSession <- function() {
 
 
 testSession <- function() {
+    # test if session object exist
 
     if(exists("session",env=.ricmdEnv)) {
         return(TRUE)
@@ -16,6 +22,8 @@ testSession <- function() {
 }
 
 destroySession <- function() {
+    # destroy session object
+
     if(exists(".ricmdEnv"))
         if(testSession()) 
             rm("session",pos=.ricmdEnv)
