@@ -57,3 +57,46 @@ test_that("proper functioning", {
               destroySession()
 
 })
+
+test_that("get meta from different collection",{
+
+
+              ri_session()
+              session <- getSession()
+              thisTestColl <- file.path(testColl,"testget")
+              ri_createCollection(thisTestColl)
+              ri_setCollection(testColl)
+              ri_setDatadir(testDatadir)
+              
+              x <- rnorm (10)
+              fname.x <- tempfile()
+              objname <- basename(fname.x)
+              saveRDS(x,fname.x)
+
+              ri_put(fname.x,collection=thisTestColl)
+              unlink(fname.x)
+              expect_true(ri_objectExists(objname,collection=thisTestColl))
+
+              ri_metaAdd(objname,collection=thisTestColl,attribute="attr1",value="val1")
+              ri_metaAdd(objname,collection=thisTestColl,attribute="attr2",value="val2",unit="unit2")
+
+              mdf <- ri_metaGet(objname,collection=thisTestColl)
+              #expect_equal(lst$avu[[1]]$attribute,"attr1")
+              expect_equal(nrow(mdf),2)
+              expect_equal(ncol(mdf),3)
+              expect_equal(attr(mdf,"object"),objname)
+              expect_equal(attr(mdf,"collection"),thisTestColl)
+
+
+              if(ri_objectExists(objname,collection=thisTestColl)) {
+                  session$data_objects$unlink(paste0(thisTestColl,"/",objname))
+              }
+
+              ri_removeCollection(thisTestColl)
+              destroySession()
+
+})
+
+
+
+

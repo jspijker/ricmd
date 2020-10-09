@@ -29,7 +29,7 @@ ri_metaGet <- function(object, collection=ri_getCollection()) {
         stop("ri_metaGet: collection is not character")
     }
 
-    if(!ri_objectExists(object)) {
+    if(!ri_objectExists(object,collection)) {
         stop("ri_metaGet: object does not exists")
     }
 
