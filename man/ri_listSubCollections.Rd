@@ -18,3 +18,7 @@ Provides a list of all subcollections within a collection. The
 collection is either the default collection or a collection
 specfied by argument
 }
+\details{
+see \code{\link{ri_setCollection}} for how to set the default
+collection.
+}

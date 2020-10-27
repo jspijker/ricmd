@@ -4,12 +4,9 @@
 #' allready exists, it is not overwritten by default
 #'
 #' @param filename filename or path of file to store
-#' @param collection if NULL this is the default collection, else
-#' the name of the collection where to store the data object
-#' @param object name of the data object, defaults to the basename of
-#' the path given by the file argument
+#' @param collection name of the collection where to store the data, if not provided it uses the default collection
+#' @param object name of the data object, defaults to the basename of the path given by the file argument
 #' @param overwrite overwrite existing data objects, default to FALSE
-#'
 #'
 #' @export
 

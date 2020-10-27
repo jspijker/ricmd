@@ -1,14 +1,11 @@
 #' Test if collection exists
 #'
-#' Test if a collection allready exists
+#' This function test if a collection exists. The collection must be
+#' given as full path of the collection.
 #'
-#' @param collection name of new collection
+#' @param collection name of the collection
 #'
 #' @return TRUE if collection exists, FALSE otherwise
-#'
-#'
-#' This function test of a collection (subcollection) exists within an
-#' existing collection. 
 #'
 #' @export
 #'
@@ -25,7 +22,7 @@ ri_collectionExists <- function(collection) {
         stop("ri_collectionExists: name is not character")
     }
     session <- getSession()
- 
+
     res <- try(coll <- session$collections$get(collection),silent=TRUE)
     if(class(res)[1]=="irods.collection.iRODSCollection") {
         result <- TRUE

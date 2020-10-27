@@ -21,8 +21,10 @@ ri_metaExists(
 
 \item{units}{unit of attribute, will be NULL if not provided}
 
-\item{collection}{iRODS collection where data object resides, if
-not provided, the defaul collection will be used}
+\item{collection}{iRODS collection where data object resides, if not provided, the default collection will be used}
+}
+\value{
+TRUE if AVU tripple exists, FALSE otherwise
 }
 \description{
 Checks if an AVU triple allready exists in the meta data

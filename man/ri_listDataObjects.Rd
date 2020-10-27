@@ -2,13 +2,13 @@
 % Please edit documentation in R/ri_listDataObjects.R
 \name{ri_listDataObjects}
 \alias{ri_listDataObjects}
-\title{List data objects wihtin collection}
+\title{List data objects wihtin a collection}
 \usage{
 ri_listDataObjects(collection = ri_getCollection())
 }
 \arguments{
-\item{collection}{if NULL this is the default collection, either
-the name of the collection to list the dataobjects}
+\item{collection}{name of the collection, if not provided, then
+this will be the default collection.}
 }
 \value{
 character vector with names of dataobjects
@@ -16,5 +16,9 @@ character vector with names of dataobjects
 \description{
 Provides a list of all data objects within a collection. The
 collection is either the default collection or a collection
-specfied by argument
+specfied by argument.
+}
+\details{
+see \code{\link{ri_setCollection}} for how to set the default
+collection.
 }

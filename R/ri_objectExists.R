@@ -1,23 +1,16 @@
 #' Check if data objects exists
 #'
-#' Check if a data object exists in the default collection or in a
-#' given collection.
+#' This function checks if an object exists in a collection. This
+#' collection is either the default collection or a collection
+#' specified by the collection argument.
 #'
-#' @param object name of object
-#' @param collection name of collection, if not given, it uses the
+#' @param object name of the object
+#' @param collection name of the collection, if not given, it uses the
 #' default collection
 #'
 #' @return TRUE of the object exists, FALSE otherwise
 #'
-#'
-#' This function checks if an object exists in a collection. This
-#' collection is either the default collection of a collection
-#' specified by the collection argument
-#'
-#'
-#'
 #' @export
-#'
 
 
 ri_objectExists <- function(object,collection=NULL) {

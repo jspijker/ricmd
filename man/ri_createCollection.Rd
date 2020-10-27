@@ -7,15 +7,13 @@
 ri_createCollection(collection)
 }
 \arguments{
-\item{collection}{name of new collection}
+\item{collection}{path of new collection}
 }
 \value{
 nothing
-
-
-This function creates a new collection (subcollection) within an
-existing collection.
 }
 \description{
-Create a new collection wihtin an existing collection.
+This function creates a new collection in iRODS. The collection
+must be provided with the full path. If the collection can't be
+created, this function generates an error.
 }

@@ -7,7 +7,6 @@
 #'
 #' @return nothing
 #'
-#'
 #' @export
 
 

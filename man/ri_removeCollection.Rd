@@ -7,10 +7,10 @@
 ri_removeCollection(collection)
 }
 \arguments{
-\item{collection}{name of the collection to remove
-
-This function removes an collection}
+\item{collection}{name of the collection to remove}
 }
 \description{
-This function removes an iRODS collection
+This function removes an iRODS collection. The collection must be
+empty. If the collection can not be removed, this function
+generates an error.
 }

@@ -7,13 +7,14 @@
 ri_setCollection(collection)
 }
 \arguments{
-\item{collection}{path to the default IRODS collection
-
-Many function in this package use the default collection for
-storing and retrieving data objects. The default collection must be
-set by the user after the initialisation of the IRODS session with
-ri_session.}
+\item{collection}{path to the default IRODS collection}
 }
 \description{
 This functions sets the default collection for the user
+}
+\details{
+Many function in this package use the default collection for
+storing and retrieving data objects. The default collection must be
+set by the user after the initialisation of the IRODS session with
+\code{\link{ri_session}}.
 }

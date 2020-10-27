@@ -1,17 +1,14 @@
 #' Get all meta data from an iRODS object
 #'
 #' This function retrieves all meta data, i.e. AVU triples, from an
-#' iRODS data object
+#' iRODS data object. 
 #'
 #'
 #' @param object name of data object
 #' @param attribute name of attribute
 #' @param collection iRODS collection where data object resides
 #'
-#' This function returns a list with the meta data of an iRODS data
-#' object (AVU triple). The first level in the list are the
-#' attributes, each attribute in the list is a list with the value and
-#' unit.
+#' @return A data.frame with three fields for attribute, value and units data
 #'
 #'
 #'

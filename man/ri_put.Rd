@@ -9,11 +9,9 @@ ri_put(filename, collection = NULL, object = NULL, overwrite = FALSE)
 \arguments{
 \item{filename}{filename or path of file to store}
 
-\item{collection}{if NULL this is the default collection, else
-the name of the collection where to store the data object}
+\item{collection}{name of the collection where to store the data, if not provided it uses the default collection}
 
-\item{object}{name of the data object, defaults to the basename of
-the path given by the file argument}
+\item{object}{name of the data object, defaults to the basename of the path given by the file argument}
 
 \item{overwrite}{overwrite existing data objects, default to FALSE}
 }

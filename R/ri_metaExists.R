@@ -7,8 +7,9 @@
 #' @param attribute name of attribute
 #' @param value value of attribute
 #' @param units unit of attribute, will be NULL if not provided
-#' @param collection iRODS collection where data object resides, if
-#' not provided, the defaul collection will be used
+#' @param collection iRODS collection where data object resides, if not provided, the default collection will be used
+#'
+#' @return TRUE if AVU tripple exists, FALSE otherwise
 #'
 #' @export
 

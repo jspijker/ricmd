@@ -19,10 +19,7 @@ ri_metaRemove(
 
 \item{value}{value of attribute}
 
-\item{collection}{iRODS collection where data object resides, if
-not provided, the defaul collection will be used
-
-This function removes an AVU tripple from an iRODS object.}
+\item{collection}{iRODS collection where data object resides, if not provided, the default collection will be used}
 
 \item{units}{unit of attribute, will be NULL if not provided}
 }

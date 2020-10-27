@@ -9,9 +9,11 @@
 #'
 #' @return character vector with names of subcollections
 #'
+#' @details
+#' see \code{\link{ri_setCollection}} for how to set the default
+#' collection.
+#'
 #' @export
-#'
-#'
 
 ri_listSubCollections <- function(collection=NULL) {
 

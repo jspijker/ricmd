@@ -26,19 +26,21 @@ data object}
 }
 \value{
 nothing
-
-This function retrieves a data object from an iRODS collection. The
-default behaviour is to get the object from the default collection
-(see ri_setCollection) and store it in the local data directory
-(see ri_setDatadir) using the data object's name as filename.
-
-Using the arguments collection, datadir, and filename one can
-override the default behaviour.
-
-A file is not overwritten if it allready exists in the data
-directory, use the overwrite argument to force writing of the file
 }
 \description{
 Get an object from an iRODS collection. If no collection is given,
 it uses the default collection.
+}
+\details{
+This function retrieves a data object from an iRODS collection. The
+default behaviour is to get the object from the default collection
+(see \code{\link{ri_setCollection}})  and store it in the local data directory
+(see \code{\link{[ri_setDatadir}} ) using the data object's name as filename.
+Using the arguments collection, datadir, and filename it is
+possible to override this default behaviour.
+
+A file is not overwritten if it allready exists in the data
+directory, use the overwrite argument to force writing of the file.
+If the file exists and overwrite=FALSE, then this function will
+generate an error
 }

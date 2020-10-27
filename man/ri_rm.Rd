@@ -9,15 +9,12 @@ ri_rm(object, collection = ri_getCollection())
 \arguments{
 \item{object}{name of the object}
 
-\item{collection}{collection of the object, if no collection is
-provided it uses the default collection}
+\item{collection}{collection of the object, if no collection is provided it uses the default collection}
 }
 \value{
 nothing
-
-This function removes a data object from an iRODS collection. If
-the data object does not exists, it will be silently ignored
 }
 \description{
-Delete a data object from an iRODS collection
+Remove a data object from an iRODS collection. If
+the data object does not exists, it will be silently ignored
 }
