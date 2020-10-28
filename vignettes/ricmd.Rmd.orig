@@ -34,7 +34,7 @@ documentation](https://irods.org/documentation/)
 
 
 This package is based on the [python
-irodsclient](https://github.com/irods/python-irodsclient) and it calls
+irodsclient](https://github.com/irods/python-irodsclient) and it uses
 [reticulate](https://cran.r-project.org/package=reticulate) to interact
 with this library.
 
@@ -175,14 +175,14 @@ ri_removeCollection("/tempZone/home/devel/tests")
 ## Data objects vs local files
 
 Data objects in iRODS can be regarded as files (although, technically
-no t completely true). One can store a local
+not completely true). One can store a local
 file from disk as data object into a data collection of iRODS. Also, a
 data object can be retrieved from iRODS and stored as file on the
 local disk. Storing and retrieving in iRODS are called put and get
 respectively. 
 
 By default the data object is stored in or retrieved from the default
-collection set by `ri\_setCollection`. A equivalent approach can be
+collection set by `ri\_setCollection`. An equivalent approach can be
 followed for files stored on disk. It is good practice to seperate
 data from code.This means that data is always written to a different
 location (directory) than your current working directory, which
@@ -294,7 +294,7 @@ ri_get("datafile.rds",filename="datafile2.rds")
 
 # Manage meta data
 
-In iRODS meta data, as AVU tripple, can be associated with users,
+In iRODS meta data, an AVU tripple, can be associated with users,
 collections and data objects. This package only supports meta data of
 data objects. Meta data of collections, users etc. is not supported.
 
