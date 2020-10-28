@@ -10,7 +10,7 @@
 #' @export
 
 
-ri_session <- function(envir=path.expand('~/.irods/irods_environment.json')) {
+ri_session <- function(env=path.expand('~/.irods/irods_environment.json')) {
 
     if(!file.exists(env)) {
         stop("irods environment file not found")
