@@ -11,17 +11,23 @@ iRODS collections from within R.
 
 With this package you can:
  - Connect to an iRODS Zone
+ - Create and remove collections 
  - store and retrieve data from a collection
- - add meta data 
- - search meta data 
+ - add and remove meta data from data objects
 
-# Development status
+# Release
 
-This package is under development and not al functions are implemented
-yet
+The current release is version 1.0.0. Version numbers follow the
+major.minor.patch versioning system.
 
-Currently only the basic functions needed to store,retrieve and remove
-data objects from an iRODS collection are implemented. 
+# Development version
+
+This package is stil under development and new features will be added
+in the future.  For example meta data management for collections
+and search queries on meta data are anticipated.
+
+latest features can be found in the development branch of this
+packge.
 
 # Install
 
@@ -37,8 +43,6 @@ To read the vignette:
 ```r
 vignette("ricmd")
 ```
-
-
 
 # licence
 
