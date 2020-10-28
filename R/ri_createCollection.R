@@ -1,18 +1,15 @@
 #' Create a new IRODS collection
 #'
-#' Create a new collection wihtin an existing collection.
+#' This function creates a new collection in iRODS. The collection
+#' must be provided with the full path. If the collection can't be
+#' created, this function generates an error.
 #'
-#' @param collection name of new collection
+#' @param collection path of new collection
 #'
 #' @return nothing
 #'
 #'
-#' This function creates a new collection (subcollection) within an
-#' existing collection. 
-#'
 #' @export
-#'
-#'
 
 
 ri_createCollection <- function(collection) {

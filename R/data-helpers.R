@@ -1,11 +1,12 @@
 ######################################################################
 # Helper functions for local data directory
 ######################################################################
+
 testDatadir <- function() {
     # test if local data directory exists
 
 
-    dd <- get("datadir",env=.ricmdEnv)
+    dd <- get("datadir", envir = .ricmdEnv)
     res <- if(is.na(dd)) {
         res <- FALSE
     } else {
@@ -20,7 +21,7 @@ ri_getDatadir <- function() {
     if(!testDatadir()) {
         stop("ri_getDatadir: data directory is not set (forgot ri_setDatadir?)")
     }
-    res <- get("datadir",env=.ricmdEnv)
+    res <- get("datadir", envir = .ricmdEnv)
     return(res)
 }
 

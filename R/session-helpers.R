@@ -6,7 +6,7 @@ getSession <- function() {
     # get session object
 
     if(!testSession())  stop("session does not exists")
-    s <- get("session",env=.ricmdEnv)
+    s <- get("session", envir = .ricmdEnv)
     return(s)
 }
 
@@ -14,7 +14,7 @@ getSession <- function() {
 testSession <- function() {
     # test if session object exist
 
-    if(exists("session",env=.ricmdEnv)) {
+    if(exists("session", envir = .ricmdEnv)) {
         return(TRUE)
     } else {
         return(FALSE)

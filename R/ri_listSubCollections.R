@@ -9,22 +9,20 @@
 #'
 #' @return character vector with names of subcollections
 #'
+#' @details
+#' see \code{\link{ri_setCollection}} for how to set the default
+#' collection.
+#'
 #' @export
-#'
-#'
 
-ri_listSubCollections <- function(collection=NULL) {
+ri_listSubCollections <- function(collection=ri_getCollection()) {
 
-    if(is.null(collection)) {
-        collection <- ri_getCollection()
-    } else {
-        if (!is.character(collection)) {
-            stop("ri_listSubCollections: collection is not character")
-        }
+    if (!is.character(collection)) {
+        stop("ri_listSubCollections: collection is not character")
     }
 
     cols <- getCollectionObjects(collection)
-    l <- getObjects(cols$subcollections,"name")
+    l <- getObjects(cols$subcollections, "name")
     return(l)
 }
 

@@ -1,15 +1,12 @@
 #' Delete a data object 
 #'
-#' Delete a data object from an iRODS collection
+#' Remove a data object from an iRODS collection. If
+#' the data object does not exists, it will be silently ignored
 #'
 #' @param object name of the object
-#' @param collection collection of the object, if no collection is
-#' provided it uses the default collection
+#' @param collection collection of the object, if no collection is provided it uses the default collection
 #'
 #' @return nothing
-#'
-#' This function removes a data object from an iRODS collection. If
-#' the data object does not exists, it will be silently ignored
 #'
 #' @export
 

@@ -6,7 +6,7 @@
 testCollection <- function() {
     # test if default collection is set (e.g. using ri_setCollection)
 
-    coll <- get("collection",env=.ricmdEnv)
+    coll <- get("collection", envir = .ricmdEnv)
     res <- if(is.na(coll)) {
         res <- FALSE
     } else {

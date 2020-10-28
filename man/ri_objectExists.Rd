@@ -4,23 +4,19 @@
 \alias{ri_objectExists}
 \title{Check if data objects exists}
 \usage{
-ri_objectExists(object, collection = NULL)
+ri_objectExists(object, collection = ri_getCollection())
 }
 \arguments{
-\item{object}{name of object}
+\item{object}{name of the object}
 
-\item{collection}{name of collection, if not given, it uses the
+\item{collection}{name of the collection, if not given, it uses the
 default collection}
 }
 \value{
 TRUE of the object exists, FALSE otherwise
-
-
-This function checks if an object exists in a collection. This
-collection is either the default collection of a collection
-specified by the collection argument
 }
 \description{
-Check if a data object exists in the default collection or in a
-given collection.
+This function checks if an object exists in a collection. This
+collection is either the default collection or a collection
+specified by the collection argument.
 }

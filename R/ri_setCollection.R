@@ -4,10 +4,12 @@
 #'
 #' @param collection path to the default IRODS collection
 #' 
+#' @details
+#' 
 #' Many function in this package use the default collection for
 #' storing and retrieving data objects. The default collection must be
 #' set by the user after the initialisation of the IRODS session with
-#' ri_session.
+#' \code{\link{ri_session}}.
 #'
 #' @export
 
@@ -30,7 +32,7 @@ ri_setCollection <- function(collection) {
         stop("ri_setcollection: collection does not exist")
     }
 
-    assign("collection",collection,env=.ricmdEnv)
+    assign("collection", collection, envir = .ricmdEnv)
 
 }
 

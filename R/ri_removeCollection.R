@@ -1,17 +1,12 @@
 #' Removes a iRODS collection
 #'
-#' This function removes an iRODS collection
+#' This function removes an iRODS collection. The collection must be
+#' empty. If the collection can not be removed, this function
+#' generates an error.
 #'
 #' @param collection name of the collection to remove
 #'
-#' This function removes an collection
-#'
-#'
-#'
 #' @export
-#'
-#'
-#'
 
 
 ri_removeCollection <- function(collection) {

@@ -7,15 +7,12 @@
 ri_collectionExists(collection)
 }
 \arguments{
-\item{collection}{name of new collection}
+\item{collection}{name of the collection}
 }
 \value{
 TRUE if collection exists, FALSE otherwise
-
-
-This function test of a collection (subcollection) exists within an
-existing collection.
 }
 \description{
-Test if a collection allready exists
+This function test if a collection exists. The collection must be
+given as full path of the collection.
 }
