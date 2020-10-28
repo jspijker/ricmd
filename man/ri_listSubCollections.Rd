@@ -4,7 +4,7 @@
 \alias{ri_listSubCollections}
 \title{List subcollections wihtin a collection}
 \usage{
-ri_listSubCollections(collection = NULL)
+ri_listSubCollections(collection = ri_getCollection())
 }
 \arguments{
 \item{collection}{if NULL this is the default collection, either

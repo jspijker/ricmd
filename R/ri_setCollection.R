@@ -32,7 +32,7 @@ ri_setCollection <- function(collection) {
         stop("ri_setcollection: collection does not exist")
     }
 
-    assign("collection",collection,env=.ricmdEnv)
+    assign("collection", collection, envir = .ricmdEnv)
 
 }
 

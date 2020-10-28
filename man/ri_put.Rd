@@ -4,7 +4,12 @@
 \alias{ri_put}
 \title{Store data object in iRODS collection}
 \usage{
-ri_put(filename, collection = NULL, object = NULL, overwrite = FALSE)
+ri_put(
+  filename,
+  collection = ri_getCollection(),
+  object = NULL,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{filename}{filename or path of file to store}

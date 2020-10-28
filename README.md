@@ -27,7 +27,11 @@ in the future.  For example meta data management for collections
 and search queries on meta data are anticipated.
 
 latest features can be found in the development branch of this
-packge.
+package.
+
+This package contains tests. However, for these tests to run
+successfully a speficic testing environment with an iRODS install is
+needed. 
 
 # Install
 

@@ -5,7 +5,6 @@
 #'
 #'
 #' @param object name of data object
-#' @param attribute name of attribute
 #' @param collection iRODS collection where data object resides
 #'
 #' @return A data.frame with three fields for attribute, value and units data

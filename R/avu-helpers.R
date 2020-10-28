@@ -23,7 +23,7 @@ avuStoreLst <- function(object,collection,l){
 
     l.obj <- avuGet(object,collection)
     for(i in l$avu) {
-        if(!avuExistsLst(l.obj,attribute=i$attribute,value=i$value,unit=i$unit)) {
+        if(!avuExistsLst(l.obj,attribute=i$attribute,value=i$value,units=i$unit)) {
             if(is.na(i$units)) {
                 avuStore(object,collection,attribute=i$attribute,
                          value=i$value)
@@ -60,7 +60,7 @@ avuExistsLst <- function(l,attribute,value,units=NULL) {
         uns <- as.data.frame(t(sapply(key,"[")))$units
         if(is.na(units) && any(is.na(uns)))
             doesExist <- TRUE 
-        if(!is.na(units)&&any(na.omit(unlist(uns))==units)) {
+        if(!is.na(units)&&any(stats::na.omit(unlist(uns))==units)) {
             doesExist <- TRUE
         }
     }

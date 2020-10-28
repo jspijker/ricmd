@@ -24,12 +24,12 @@
 
 ri_getCollection <- function() {
 
-    if(!testCollection()) {
+    if (!testCollection()) {
         stop("collection not set")
     }
 
 
-    coll <- get("collection",envir = .ricmdEnv)
+    coll <- get("collection", envir = .ricmdEnv)
     return(coll)
 }
 

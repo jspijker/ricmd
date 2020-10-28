@@ -4,7 +4,7 @@
 \alias{ri_objectExists}
 \title{Check if data objects exists}
 \usage{
-ri_objectExists(object, collection = NULL)
+ri_objectExists(object, collection = ri_getCollection())
 }
 \arguments{
 \item{object}{name of the object}

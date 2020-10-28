@@ -10,8 +10,6 @@ ri_metaGet(object, collection = ri_getCollection())
 \item{object}{name of data object}
 
 \item{collection}{iRODS collection where data object resides}
-
-\item{attribute}{name of attribute}
 }
 \value{
 A data.frame with three fields for attribute, value and units data
