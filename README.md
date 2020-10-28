@@ -15,7 +15,7 @@ With this package you can:
  - store and retrieve data from a collection
  - add and remove meta data from data objects
 
-# prerequisits
+# prerequisites
 
 For this package to run you need Python3.
 This package is based on the [python irodsclient](https://github.com/irods/python-irodsclient) and it uses
@@ -63,7 +63,7 @@ To read the vignette:
 vignette("ricmd")
 ```
 
-# licence
+# Licence
 
 This package is publicly available under the [GPL 3.0
 licence](https://www.gnu.org/licenses/gpl-3.0.en.html),
