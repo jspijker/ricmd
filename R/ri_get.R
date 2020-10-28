@@ -63,6 +63,7 @@ ri_get <- function(object,collection=ri_getCollection(),
 
     objpath <- file.path(collection,object)
     fname <- file.path(datadir,filename)
+    session <- getSession()
     if(file.exists(fname)) {
         if(overwrite) {
             unlink(fname)

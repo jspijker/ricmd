@@ -29,7 +29,7 @@ ri_getCollection <- function() {
     }
 
 
-    coll <- get("collection",env=.ricmdEnv)
+    coll <- get("collection",envir = .ricmdEnv)
     return(coll)
 }
 

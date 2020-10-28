@@ -25,7 +25,7 @@ ri_setDatadir <- function(datadir) {
         stop("ri_setDatadir: datadir does not exist")
     }
 
-    assign("datadir",datadir,env=.ricmdEnv)
+    assign("datadir",datadir,envir=.ricmdEnv)
 
 }
 

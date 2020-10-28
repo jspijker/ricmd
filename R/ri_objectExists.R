@@ -13,22 +13,17 @@
 #' @export
 
 
-ri_objectExists <- function(object,collection=NULL) {
+ri_objectExists <- function(object, collection=ri_getCollection()) {
 
-    if(!is.character(object)) {
+    if (!is.character(object)) {
         stop("ri_objectExists: object is not character")
     }
 
-    if(is.null(collection)) {
-        collection <- ri_getCollection()
-    } else {
-        if (!is.character(collection)) {
-            stop("ri_listdataObjects: collection is not character")
-        }
+    if (!is.character(collection)) {
+        stop("ri_listdataObjects: collection is not character")
     }
 
     session <- getSession()
-    result <- session$data_objects$exists(paste0(collection,"/",object))
+    result <- session$data_objects$exists(paste0(collection, "/", object))
     return(result)
 }
-
