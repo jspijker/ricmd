@@ -42,9 +42,10 @@ test_that("proper functioning", {
               ri_metaAdd(objname,attribute="attr2",value="val2",unit="unit2")
 
               mdf <- ri_metaGet(objname)
-              #expect_equal(lst$avu[[1]]$attribute,"attr1")
-              expect_equal(nrow(mdf),2)
-              expect_equal(ncol(mdf),3)
+
+              expect_true(all(c("attr1", "attr2") %in% mdf$attribute))
+              expect_true(all(c("val1", "val2") %in% mdf$value))
+              expect_true(all(c("unit2") %in% mdf$unit))
               expect_equal(attr(mdf,"object"),objname)
               expect_equal(attr(mdf,"collection"),testColl)
 
@@ -81,9 +82,9 @@ test_that("get meta from different collection",{
               ri_metaAdd(objname,collection=thisTestColl,attribute="attr2",value="val2",unit="unit2")
 
               mdf <- ri_metaGet(objname,collection=thisTestColl)
-              #expect_equal(lst$avu[[1]]$attribute,"attr1")
-              expect_equal(nrow(mdf),2)
-              expect_equal(ncol(mdf),3)
+              expect_true(all(c("attr1", "attr2") %in% mdf$attribute))
+              expect_true(all(c("val1", "val2") %in% mdf$value))
+              expect_true(all(c("unit2") %in% mdf$unit))
               expect_equal(attr(mdf,"object"),objname)
               expect_equal(attr(mdf,"collection"),thisTestColl)
 

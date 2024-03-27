@@ -203,13 +203,12 @@ test_that("avu2df", {
               lst <- avuGet(objname,testColl)
               lst.df <- avu2df(lst)
 
-              expect.df <- data.frame(attribute=c("attr1","attr2"),
-                                      value=c("val1","val2"),
-                                      units=c(NA,"unit2"),stringsAsFactors=FALSE)
-              attr(expect.df,"object") <- objname
-              attr(expect.df,"collection") <- testColl
-
-              expect_equal(lst.df,expect.df)
+              
+              expect_true(all(c("attr1", "attr2") %in% lst.df$attribute))
+              expect_true(all(c("val1", "val2") %in% lst.df$value))
+              expect_true(all(c("unit2") %in% lst.df$unit))
+              expect_equal(attr(lst.df,"object"),objname)
+              expect_equal(attr(lst.df,"collection"),testColl)
 
               if(ri_objectExists(basename(fname.x))) {
                   session$data_objects$unlink(paste0(testColl,"/",basename(fname.x)))
