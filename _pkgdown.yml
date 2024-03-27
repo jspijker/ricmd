@@ -1,1 +1,4 @@
-destination: docs
+qrl: ~
+template:
+  bootstrap: 5
+
