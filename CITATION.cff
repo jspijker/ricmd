@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+title: RICMD
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Job
+    family-names: Spijker
+    email: job.spijker@rivm.nl
+    affiliation: >-
+      National Institute for Public Health and the
+      Environment
+    orcid: 'https://orcid.org/0000-0001-9276-2640'
+contact:
+  - email: job.spijker@rivm.nl
+    name: "National Institute for Public Health and the Environment"
+repository-code: 'https://github.com/jspijker/ricmd'
+url: 'https://jspijker.github.io/ricmd/'
+abstract: R package for iRODS icommands. This R package is an interface between R and iRODS the integrated Rule Oriented Data System.
+keywords:
+  - iRODS
+  - r
+  - data management
+  - irods-client
+  - meta data
+license: GPL-3.0
+version: 2.0.0
