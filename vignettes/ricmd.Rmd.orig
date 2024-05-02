@@ -130,7 +130,8 @@ After initiating the iRODS session one must set the default
 collection:
 
 ```{r}
-ri_setCollection("/tempZone/home/devel")
+currentCollection <- system2("ipwd", stdout = TRUE)
+ri_setCollection(currentCollection)
 ```
 
 The name of the collection always start with the name of the zone, in
@@ -150,7 +151,7 @@ ri_getCollection()
 A new data collection can be created with
 
 ```{r}
-ri_createCollection("/tempZone/home/devel/tests")
+ri_createCollection(file.path(currentCollection, "tests"))
 ```
 
 The only argument of ri\_createCollection is the full path to the new
@@ -166,7 +167,7 @@ ri_listSubCollections()
 To remove a collection, the ri\_removeCollection command can be used:
 
 ```{r eval=FALSE}
-ri_removeCollection("/tempZone/home/devel/tests")
+ri_removeCollection(file.path(currentCollection, "tests"))
 
 ```
 
@@ -219,7 +220,8 @@ default collection.
 
 
 ```{r eval=TRUE}
-ri_setCollection("/tempZone/home/devel/tests")
+ri_createCollection(file.path(currentCollection, "tests"))
+ri_setCollection(file.path(currentCollection, "tests"))
 ri_put(filename=file.path(testDatadir,"datafile.rds"))
 ```
 
@@ -357,7 +359,7 @@ library(reticulate)
 irods <- import("irods.session")
 env <- path.expand('~/.irods/irods_environment.json')
 session <- irods$iRODSSession(irods_env_file=env)
-session$collections$remove("/tempZone/home/devel/tests")
+session$collections$remove(paste0(currentCollection, "tests"))
 rm(session)
 unlink(testDatadir,recursive=TRUE)
 
