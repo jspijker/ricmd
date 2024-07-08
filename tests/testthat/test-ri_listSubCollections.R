@@ -12,7 +12,7 @@ test_that("correct functioning",{
 
 
               newColl <- paste(testColl,"test1",sep="/")
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               ri_createCollection(newColl)
@@ -29,7 +29,7 @@ test_that("test collection argument",{
 
               newColl <- paste(testColl,"test1",sep="/")
               newSubColl <- paste(newColl,"testSub1",sep="/")
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               ri_createCollection(newColl)

@@ -12,7 +12,7 @@ test_that("correct functioning",{
 
 
               newColl <- paste(testColl,"test1",sep="/")
-              ri_session()
+              ri_session(env)
               ri_setCollection(testColl)
               expect_false(ri_collectionExists(newColl))
               ri_createCollection(newColl)

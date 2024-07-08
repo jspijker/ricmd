@@ -3,7 +3,7 @@ context("ri_get")
 
 test_that("valid arguments", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               ri_setDatadir(testDatadir)
@@ -35,7 +35,7 @@ test_that("valid arguments", {
 test_that("simple data object get", {
 
 
-              ri_session()
+              ri_session(env)
               ri_setCollection(testColl)
               ri_setDatadir(testDatadir)
               session <- getSession()
@@ -66,7 +66,7 @@ test_that("simple data object get", {
 test_that("specified data object get", {
 
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               thisTestColl <- file.path(testColl,"testget")
               ri_createCollection(thisTestColl)
@@ -114,7 +114,7 @@ test_that("overwrite existing file", {
 
 
 
-              ri_session()
+              ri_session(env)
               ri_setCollection(testColl)
               ri_setDatadir(testDatadir)
               session <- getSession()

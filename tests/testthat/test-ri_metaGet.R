@@ -3,7 +3,7 @@ context("ri_metaGet")
 
 test_that("valid arguments", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -29,7 +29,7 @@ test_that("valid arguments", {
 
 test_that("proper functioning", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -62,7 +62,7 @@ test_that("proper functioning", {
 test_that("get meta from different collection",{
 
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               thisTestColl <- file.path(testColl,"testget")
               ri_createCollection(thisTestColl)

@@ -3,7 +3,7 @@ context("avu-helpers")
 
 test_that("avuStore", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -34,7 +34,7 @@ test_that("avuStore", {
 
 test_that("avuStoreLst",{
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -62,7 +62,7 @@ test_that("avuStoreLst",{
 
 test_that("avuExists", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -113,7 +113,7 @@ test_that("avuExistsLst",{
 test_that("avuGet",{
 
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -143,7 +143,7 @@ test_that("avuGet",{
 
 test_that("avuRemove", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -188,7 +188,7 @@ test_that("avuAddLst",{
 
 test_that("avu2df", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)

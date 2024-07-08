@@ -3,7 +3,7 @@ context("data helpers")
 
 test_that("testDatadir",{
 
-              ri_session()
+              ri_session(env)
               expect_false(ricmd:::testDatadir())
               dir <- tempdir()
               ri_setDatadir(dir)
@@ -14,7 +14,7 @@ test_that("testDatadir",{
 
 test_that("getDatadir",{
 
-              ri_session()
+              ri_session(env)
               dir <- tempdir()
               ri_setDatadir(dir)
               res <- get("datadir",env=.ricmdEnv)
