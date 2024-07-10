@@ -81,13 +81,6 @@ create_auth_file <- function(verbose = TRUE) {
 
 }
 
-is_valid_session <- function(session) {
-    result <- tryCatch(sess <- session$users$get(session$username),
-                       error = function(e) NULL)
-    res <- !is.null(result)
-    return(res)
-}
-
 create_demo_env <- function(irods_ip) {
 
     if(!is.character(irods_ip)) {
