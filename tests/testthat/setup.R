@@ -11,10 +11,14 @@
 ######################################################################
 
 check_docker <- function(verbose = FALSE) {
-  # check if Docker is installed and can be accessed without sudo rights
-  docker_version <- system("docker --version", ignore.stdout = !verbose,
-                           ignore.stderr = !verbose)
-  !(Sys.which("bash") == "" || Sys.which("docker") == "" || docker_version == "")
+    # Function copied from rirods package,
+    # https://github.com/irods/irods_client_library_rirods, Martin
+    # Schobben
+    #
+    # check if Docker is installed and can be accessed without sudo rights
+    docker_version <- system("docker --version", ignore.stdout = !verbose,
+                             ignore.stderr = !verbose)
+    !(Sys.which("bash") == "" || Sys.which("docker") == "" || docker_version == "")
 }
 
 valid_ip <- function(ip) {
