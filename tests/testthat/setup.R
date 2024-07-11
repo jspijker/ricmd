@@ -56,14 +56,17 @@ get_catalog_provider_ip <- function(verbose = TRUE) {
     return(irods_ip)
 }
 
-auth_file_exists <- function() {
-    irods_dir <- path.expand("~/.irods")
+auth_file_exists <- function(irods_dir = path.expand("~/.irods")) {
+
     auth_file <- file.path(irods_dir, ".irodsA")
     res <- file.exists(auth_file)
     return(res)
 }
 
-create_auth_file <- function(verbose = TRUE) {
+create_auth_file <- function( irods_dir = path.expand("~/.irods"),
+                             verbose = TRUE) {
+
+    auth_file <- file.path(irods_dir, ".irodsA")
 
     if(!dir.exists(irods_dir)) {
         if (verbose) cat("irods directory ~/.irods not found, creating ...\n")
