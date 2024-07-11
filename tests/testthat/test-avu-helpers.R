@@ -173,7 +173,7 @@ test_that("avuRemove", {
 })
 
 
-test_that("avuAddLst",{
+test_that("avuAddLst", {
               l <- default.lst
               l <- avuAddLst(l,attribute="key3",value="val3")
               l <- avuAddLst(l,attribute="key4",value="val4",units="unit4")
