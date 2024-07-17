@@ -122,6 +122,10 @@ test_that("avuGet",{
               ri_put(fname.x)
               objname <- basename(fname.x)
 
+              l <- avuGet(object=objname,collection=testColl)
+              expect_equal(length(l), 2)
+              expect_equal(length(l$avu), 0)
+
               avuStore(objname,testColl,attribute="attr1",value="val1")
               avuStore(objname,testColl,attribute="attr2",value="val2",units="unit1")
               l <- avuGet(object=objname,collection=testColl)
@@ -197,6 +201,14 @@ test_that("avu2df", {
               objname <- basename(fname.x)
               ri_put(fname.x)
 
+              # no meta available
+              lst <- avuGet(objname,testColl)
+              lst.df <- avu2df(lst)
+              expect_equal(nrow(lst.df), 0)
+              expect_equal(attr(lst.df,"object"),objname)
+              expect_equal(attr(lst.df,"collection"),testColl)
+
+              # add meta data, and test again
               ri_metaAdd(objname,attribute="attr1",value="val1")
               ri_metaAdd(objname,attribute="attr2",value="val2",unit="unit2")
 
