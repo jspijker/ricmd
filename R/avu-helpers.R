@@ -134,8 +134,12 @@ avu2df <- function(l) {
     # transform a list with avu triples into a more human readable
     # data.frame
 
-    res <-  as.data.frame(t(matrix(unlist(l$avu),nrow=3)),stringsAsFactors=FALSE)
-    names(res) <- c("attribute","value","units")
+    if (length(l$key) ==0) {
+        res <- data.frame()
+    } else {
+        res <-  as.data.frame(t(matrix(unlist(l$avu),nrow=3)),stringsAsFactors=FALSE)
+        names(res) <- c("attribute","value","units")
+    }
     attr(res,"object") <- attr(l,"object")
     attr(res,"collection") <- attr(l,"collection")
     return(res)
