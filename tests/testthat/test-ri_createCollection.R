@@ -6,7 +6,7 @@ test_that("valid arguments", {
 
               expect_error(ri_collectionExists(testColl))
 
-              ri_session()
+              ri_session(env)
               ri_setCollection(testColl)
               expect_error(ri_createCollection(testColl)) # collection exists
               expect_error(ri_createCollection(1))
@@ -19,7 +19,7 @@ test_that("valid arguments", {
 
 test_that("correct functioning",{
               newColl <- paste(testColl,"test1",sep="/")
-              ri_session()
+              ri_session(env)
               ri_setCollection(testColl)
               ri_createCollection(newColl)
               expect_true(ri_collectionExists(newColl))

@@ -3,7 +3,7 @@ context("ri_metaAdd")
 
 test_that("valid arguments", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -35,7 +35,7 @@ test_that("valid arguments", {
 
 test_that("correct functioning", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)

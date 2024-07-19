@@ -29,5 +29,12 @@ destroySession <- function() {
             rm("session",pos=.ricmdEnv)
 }
 
+is_valid_session <- function(session) {
+    result <- tryCatch(sess <- session$users$get(session$username),
+                       error = function(e) NULL)
+    res <- !is.null(result)
+    return(res)
+}
+
 
 

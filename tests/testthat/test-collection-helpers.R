@@ -2,7 +2,7 @@ context("collection-helpers")
 
 
 test_that("testCollection",{
-              ri_session()
+              ri_session(env)
               expect_false(testCollection())
 
               ri_setCollection(testColl)
@@ -16,7 +16,7 @@ test_that("getCollectionObjects",{
 
               newColl <- paste(testColl,"test1",sep="/")
               newSubColl <- paste(newColl,"testSub1",sep="/")
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               ri_createCollection(newColl)

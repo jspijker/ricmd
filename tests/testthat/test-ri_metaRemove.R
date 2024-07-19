@@ -2,7 +2,7 @@ context("ri_metaRemove")
 
 test_that("valid arguments", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -34,7 +34,7 @@ test_that("proper functioning", {
 
 
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
