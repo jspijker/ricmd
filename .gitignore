@@ -49,3 +49,5 @@ doc
 Meta
 docs
 .lintr
+/doc/
+/Meta/
