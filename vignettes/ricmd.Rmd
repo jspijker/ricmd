@@ -111,19 +111,8 @@ To start an iRODS session from within R you exexcute the following
 commands:
 
 
-```r
+``` r
 library(ricmd)
-#> Loading required package: reticulate
-#> loading ricmd python3 environment
-#> 
-#> python:         /usr/bin/python3
-#> libpython:      /usr/lib/python3.7/config-3.7m-x86_64-linux-gnu/libpython3.7.so
-#> pythonhome:     //usr://usr
-#> version:        3.7.5 (default, Apr 19 2020, 20:18:17)  [GCC 9.2.1 20191008]
-#> numpy:          /usr/lib/python3/dist-packages/numpy
-#> numpy_version:  1.16.2
-#> 
-#> NOTE: Python version was forced by use_python function
 ri_session()
 #> Error in ri_session(): irods environment file not found
 ```
@@ -137,9 +126,10 @@ After initiating the iRODS session one must set the default
 collection:
 
 
-```r
-ri_setCollection("/tempZone/home/devel")
-#> Error in ri_setCollection("/tempZone/home/devel"): ri_setcollection: session does not exists
+``` r
+my_collection <- "/tempZone/home/devel"
+ri_setCollection(my_collection)
+#> Error in ri_setCollection(my_collection): ri_setcollection: session does not exists
 ```
 
 The name of the collection always start with the name of the zone, in
@@ -151,9 +141,9 @@ This default collection can be changed anytime in your script. If you
 want check which collection is the default collection, then use:
 
 
-```r
+``` r
 ri_getCollection()
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+#> Error in ri_getCollection(): collection not set
 ```
 
 # Creating a new collection
@@ -161,8 +151,9 @@ ri_getCollection()
 A new data collection can be created with
 
 
-```r
-ri_createCollection("/tempZone/home/devel/tests")
+``` r
+test_collection <- file.path(my_collection, "tests")
+ri_createCollection(test_collection)
 #> Error in ri_collectionExists(collection): ri_collectionExists: session does not exists
 ```
 
@@ -173,16 +164,16 @@ Since we created the new collection inside our default collection, we
 can show it using the ri\_listSubCollections command:
 
 
-```r
+``` r
 ri_listSubCollections()
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+#> Error in ri_getCollection(): collection not set
 ```
 
 To remove a collection, the ri\_removeCollection command can be used:
 
 
-```r
-ri_removeCollection("/tempZone/home/devel/tests")
+``` r
+ri_removeCollection(test_collection)
 
 ```
 
@@ -210,19 +201,19 @@ To demonstrate this, we first create a temporary data directory and
 store a data file in that directory:
 
 
-```r
+``` r
 
-testDatadir <- file.path(tempdir(),'data')
+testDatadir <- file.path(tempdir(), 'data')
 dir.create(testDatadir)
 
 x <- rnorm(10)
-saveRDS(x,file.path(testDatadir,"datafile.rds"))
+saveRDS(x,file.path(testDatadir, "datafile.rds"))
 ```
 
 We set this data directory as default location for local files
 
 
-```r
+``` r
 ri_setDatadir(testDatadir)
 ```
 
@@ -236,11 +227,14 @@ default collection.
 
 
 
-```r
-ri_setCollection("/tempZone/home/devel/tests")
-#> Error in ri_setCollection("/tempZone/home/devel/tests"): ri_setcollection: session does not exists
-ri_put(filename=file.path(testDatadir,"datafile.rds"))
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+``` r
+ri_setCollection(test_collection)
+#> Error in ri_setCollection(test_collection): ri_setcollection: session does not exists
+```
+
+``` r
+ri_put(filename = file.path(testDatadir, "datafile.rds"))
+#> Error in ri_getCollection(): collection not set
 ```
 
 This stores the datafile.rds file as object in the default collection.
@@ -248,9 +242,9 @@ To see a list of stored objects the ri\_listDataObjects function is
 available
 
 
-```r
+``` r
 ri_listDataObjects()
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+#> Error in ri_getCollection(): collection not set
 ```
 
 Overwriting and existing object is not allowed, this results in an
@@ -258,23 +252,25 @@ error. Using the overwrite=TRUE argument, overwriting of objects can
 be forced
 
 
-```r
+``` r
 # results in an error
-try(ri_put(filename=file.path(testDatadir,"datafile.rds")))
-#> Error in get("collection", env = .ricmdEnv) : 
-#>   object 'collection' not found
+try(ri_put(filename = file.path(testDatadir, "datafile.rds")))
+#> Error in ri_getCollection() : collection not set
+```
+
+``` r
 
 # this works
-ri_put(filename=file.path(testDatadir,"datafile.rds"),overwrite=TRUE)
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+ri_put(filename = file.path(testDatadir, "datafile.rds"), overwrite = TRUE)
+#> Error in ri_getCollection(): collection not set
 ```
 
 Now that the data is stored in iRODS you can remove the local file if
 you want.
 
 
-```r
-unlink(file.path(testDatadir,"datafile.rds"))
+``` r
+unlink(file.path(testDatadir, "datafile.rds"))
 ```
 
 
@@ -286,18 +282,22 @@ the `ri_get()` function. By default, this functions stores the file
 locally in the data directory defined above.
 
 
-```r
+``` r
 ri_get("datafile.rds")
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+#> Error in ri_getCollection(): collection not set
 ```
 And now you can read and process the data
 
 
-```r
-x <- readRDS(file.path(testDatadir,"datafile.rds"))
-#> Warning in gzfile(file, "rb"): cannot open compressed file '/tmp/Rtmpdl1UyP/
-#> data/datafile.rds', probable reason 'No such file or directory'
+``` r
+x <- readRDS(file.path(testDatadir, "datafile.rds"))
+#> Warning in gzfile(file, "rb"): cannot open compressed file
+#> '/tmp/RtmpVeUX5Q/data/datafile.rds', probable reason 'No such file or
+#> directory'
 #> Error in gzfile(file, "rb"): cannot open the connection
+```
+
+``` r
 print(length(x))
 #> [1] 10
 ```
@@ -307,9 +307,9 @@ different filename, you can use the datadir and filename arguments of
 this function
 
 
-```r
-ri_get("datafile.rds",datadir="/path/to/other/directory",
-    filename="differentFileName.rds")
+``` r
+ri_get("datafile.rds", datadir = "/path/to/other/directory",
+    filename = "differentFileName.rds")
 ```
 
 The ri\_get does not overwrite existing files by default. If you want
@@ -317,19 +317,24 @@ to get the same data object more than once you either overwrite the
 existing file or rename it
 
 
-```r
+``` r
 # the file allready exists, so this results in an error
 try(ri_get("datafile.rds"))
-#> Error in get("collection", env = .ricmdEnv) : 
-#>   object 'collection' not found
+#> Error in ri_getCollection() : collection not set
+```
+
+``` r
 
 # overwrite te file
-ri_get("datafile.rds",overwrite=TRUE)
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+ri_get("datafile.rds", overwrite = TRUE)
+#> Error in ri_getCollection(): collection not set
+```
+
+``` r
 
 # or use different file anme
-ri_get("datafile.rds",filename="datafile2.rds")
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+ri_get("datafile.rds", filename = "datafile2.rds")
+#> Error in ri_getCollection(): collection not set
 ```
 
 # Manage meta data
@@ -348,9 +353,9 @@ want to add meta data to the `datafile.rds` data object created above,
 we execute:
 
 
-```r
-ri_metaAdd(object="datafile.rds",attribute="attr1",value="val1")
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+``` r
+ri_metaAdd(object = "datafile.rds", attribute = "attr1", value = "val1")
+#> Error in ri_getCollection(): collection not set
 ```
 In above command we assume that `datafile.rds` is in the default
 collection. For an AVU triple, you must provide an attribute and
@@ -360,9 +365,9 @@ If you want to add meta data to an object in a different collection,
 you must provide the collection argument:
 
 
-```r
-ri_metaAdd(object="otherObject",attribute="attr1",value="val4",
-           collection="/zone/otherCollection")
+``` r
+ri_metaAdd(object = "otherObject", attribute = "attr1", value = "val4",
+           collection = "/zone/otherCollection")
 ```
 
 With the ri\_metaGet you can get all the meta data from an object as
@@ -372,41 +377,52 @@ data.frame gives NA values for units which are NULL.
 
 
 
-```r
+``` r
 # first add some more meta data
-ri_metaAdd(object="datafile.rds",attribute="attr2",value="val2")
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
-ri_metaAdd(object="datafile.rds",attribute="attr3",value="val3",units="unit1")
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+ri_metaAdd(object = "datafile.rds", attribute = "attr2", value = "val2")
+#> Error in ri_getCollection(): collection not set
+```
+
+``` r
+ri_metaAdd(object = "datafile.rds", attribute = "attr3", value = "val3", units = "unit1")
+#> Error in ri_getCollection(): collection not set
+```
+
+``` r
 
 # get meta data
 meta <- ri_metaGet("datafile.rds")
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+#> Error in ri_getCollection(): collection not set
+```
+
+``` r
 print(meta)
-#> Error in print(meta): object 'meta' not found
+#> Error in eval(expr, envir, enclos): object 'meta' not found
 ```
 
 You can also delete meta triples from an object.
 
 
-```r
+``` r
 
-ri_metaRemove("datafile.rds",attribute="attr3",value="val3",units="unit1")
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+ri_metaRemove("datafile.rds", attribute  = "attr3", value = "val3", units = "unit1")
+#> Error in ri_getCollection(): collection not set
+```
+
+``` r
 meta <- ri_metaGet("datafile.rds")
-#> Error in get("collection", env = .ricmdEnv): object 'collection' not found
+#> Error in ri_getCollection(): collection not set
+```
+
+``` r
 print(meta)
-#> Error in print(meta): object 'meta' not found
+#> Error in eval(expr, envir, enclos): object 'meta' not found
 ```
 
 
 ```
-#> Error in py_module_import(module, convert = convert): ModuleNotFoundError: No module named 'irods'
-#> 
-#> Detailed traceback: 
-#>   File "/home/spijker/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/loader.py", line 24, in _import_hook
-#>     level=level
-#> Error in eval(expr, envir, enclos): object 'irods' not found
+#> iRODSAccount.__init__() missing 4 required positional arguments: 'irods_host',
+#> 'irods_port', 'irods_user_name', and 'irods_zone_name'
 #> Error in eval(expr, envir, enclos): object 'session' not found
 #> Warning in rm(session): object 'session' not found
 ```
