@@ -14,7 +14,27 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, echo = FALSE, messages = FALSE}
+
+if (!ri_test_check_docker()) {
+    stop("Docker binary not found")
+}
+
+irods_ip <- ri_test_get_catalog_provider_ip()
+if (!ri_test_auth_file_exists()) ri_test_create_auth_file()
+env <- ri_test_create_demo_env(irods_ip)
+
+irods <- import("irods.session")
+session <- irods$iRODSSession(irods_env_file=env)
+
+if (!is_valid_session(session)) {
+    stop("No valid iRODS session")
+}
+
+irods_zone = session$zone
+irods_user = session$user
+
+rm(session)
 ```
 
 # Introduction
@@ -127,10 +147,12 @@ to the session class from the pyton library and contains all the methods
 for working with iRODS.
 
 After initiating the iRODS session one must set the default
-collection:
+collection. In our case we use the home collection of the user and we
+asume that the variables irods_zone and irods_user contain the name of
+the iRODS zone and user respectively.
 
 ```{r}
-my_collection <- "/tempZone/home/devel"
+my_collection <- file.path(irods_zone, "home", irods_user)
 ri_setCollection(my_collection)
 ```
 
@@ -362,7 +384,6 @@ session <- irods$iRODSSession(irods_env_file = env)
 session$collections$remove(test_collection)
 rm(session)
 unlink(testDatadir, recursive = TRUE)
-
 ```
 
 
