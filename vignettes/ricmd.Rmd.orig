@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, echo = FALSE, messages = FALSE}
+library(ricmd)
 
 if (!ri_test_check_docker()) {
     stop("Docker binary not found")
@@ -25,14 +26,15 @@ if (!ri_test_auth_file_exists()) ri_test_create_auth_file()
 env <- ri_test_create_demo_env(irods_ip)
 
 irods <- import("irods.session")
-session <- irods$iRODSSession(irods_env_file=env)
+session <- irods$iRODSSession(irods_env_file = env)
 
-if (!is_valid_session(session)) {
+if (!ri_test_valid_session(session)) {
     stop("No valid iRODS session")
 }
 
-irods_zone = session$zone
-irods_user = session$user
+irods_user <- session$username
+irods_zone <- session$zone
+irods_env_file <- env
 
 rm(session)
 ```
@@ -134,11 +136,12 @@ assume that your iRODS environment is set up properly and that you
 have the python iRODS client in place.
 
 To start an iRODS session from within R you exexcute the following
-commands:
+command. The irods\_env\_file usually points to
+~/.irods/irods\_environment.json.
 
 ```{r}
 library(ricmd)
-ri_session()
+ri_session(irods_env_file)
 ```
 
 Executing this command creates a hidden environment wich contains the
@@ -152,7 +155,8 @@ asume that the variables irods_zone and irods_user contain the name of
 the iRODS zone and user respectively.
 
 ```{r}
-my_collection <- file.path(irods_zone, "home", irods_user)
+my_collection <- file.path("",irods_zone, "home", irods_user)
+my_collection
 ri_setCollection(my_collection)
 ```
 
@@ -378,8 +382,8 @@ print(meta)
 # Let's clean all the stuff this vignettes creates
 
 library(reticulate)
-irods <- import("irods.session")
-env <- path.expand("~/.irods/irods_environment.json")
+#irods <- import("irods.session")
+#env <- path.expand("~/.irods/irods_environment.json")
 session <- irods$iRODSSession(irods_env_file = env)
 session$collections$remove(test_collection)
 rm(session)
