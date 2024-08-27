@@ -35,7 +35,7 @@ env <- ri_test_create_demo_env(irods_ip)
 irods <- import("irods.session")
 session <- irods$iRODSSession(irods_env_file=env)
 
-if (!is_valid_session(session)) {
+if (!ri_test_valid_session(session)) {
     stop("No valid iRODS session")
 } else {
     cat("iRODS session is valid\n")
