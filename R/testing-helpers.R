@@ -57,7 +57,7 @@ ri_test_valid_ip <- function(ip) {
 #'
 #' @export
 
-ri_test_get_catalog_provider_ip <- function(verbose = TRUE) {
+ri_test_get_catalog_provider_ip <- function(verbose = FALSE) {
 
 
     # check irods grid, get ip
@@ -181,5 +181,28 @@ ri_test_create_demo_env <- function(irods_ip) {
     return(irods_env_f)
 }
 
+
+#' ricmd test function, creates demo environment file
+#'
+#' The ri_test_... functions are meant for package testing and setting
+#' up a demo environment. These functions are not intended for package
+#' users.
+#' tests if iRODS session object is valid
+#'
+#' @param session iRODS session object
+#'
+#' An valid session object contains an iRODS connection. This function
+#' tests if a username is present for a connection. If so, the
+#' connection is considered valid and the function returns TRUE
+#'
+#' @export
+
+
+ri_test_valid_session <- function(session) {
+    result <- tryCatch(sess <- session$users$get(session$username),
+                       error = function(e) NULL)
+    res <- !is.null(result)
+    return(res)
+}
 
 
