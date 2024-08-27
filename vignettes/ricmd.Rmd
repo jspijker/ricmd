@@ -10,6 +10,18 @@ vignette: >
 
 
 
+```
+#> Error in ri_test_check_docker(): could not find function "ri_test_check_docker"
+#> Error in ri_test_get_catalog_provider_ip(): could not find function "ri_test_get_catalog_provider_ip"
+#> Error in ri_test_auth_file_exists(): could not find function "ri_test_auth_file_exists"
+#> Error in ri_test_create_demo_env(irods_ip): could not find function "ri_test_create_demo_env"
+#> Error in import("irods.session"): could not find function "import"
+#> Error in eval(expr, envir, enclos): object 'irods' not found
+#> Error in is_valid_session(session): could not find function "is_valid_session"
+#> Error in eval(expr, envir, enclos): object 'session' not found
+#> Error in eval(expr, envir, enclos): object 'session' not found
+#> Warning in rm(session): object 'session' not found
+```
 
 # Introduction
 
@@ -113,8 +125,12 @@ commands:
 
 ``` r
 library(ricmd)
+#> Error in library(ricmd): there is no package called 'ricmd'
+```
+
+``` r
 ri_session()
-#> Error in ri_session(): irods environment file not found
+#> Error in ri_session(): could not find function "ri_session"
 ```
 
 Executing this command creates a hidden environment wich contains the
@@ -123,13 +139,19 @@ to the session class from the pyton library and contains all the methods
 for working with iRODS.
 
 After initiating the iRODS session one must set the default
-collection:
+collection. In our case we use the home collection of the user and we
+asume that the variables irods_zone and irods_user contain the name of
+the iRODS zone and user respectively.
 
 
 ``` r
-my_collection <- "/tempZone/home/devel"
+my_collection <- file.path(irods_zone, "home", irods_user)
+#> Error in eval(expr, envir, enclos): object 'irods_zone' not found
+```
+
+``` r
 ri_setCollection(my_collection)
-#> Error in ri_setCollection(my_collection): ri_setcollection: session does not exists
+#> Error in ri_setCollection(my_collection): could not find function "ri_setCollection"
 ```
 
 The name of the collection always start with the name of the zone, in
@@ -143,7 +165,7 @@ want check which collection is the default collection, then use:
 
 ``` r
 ri_getCollection()
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_getCollection(): could not find function "ri_getCollection"
 ```
 
 # Creating a new collection
@@ -153,8 +175,12 @@ A new data collection can be created with
 
 ``` r
 test_collection <- file.path(my_collection, "tests")
+#> Error in eval(expr, envir, enclos): object 'my_collection' not found
+```
+
+``` r
 ri_createCollection(test_collection)
-#> Error in ri_collectionExists(collection): ri_collectionExists: session does not exists
+#> Error in ri_createCollection(test_collection): could not find function "ri_createCollection"
 ```
 
 The only argument of ri\_createCollection is the full path to the new
@@ -166,7 +192,7 @@ can show it using the ri\_listSubCollections command:
 
 ``` r
 ri_listSubCollections()
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_listSubCollections(): could not find function "ri_listSubCollections"
 ```
 
 To remove a collection, the ri\_removeCollection command can be used:
@@ -215,6 +241,7 @@ We set this data directory as default location for local files
 
 ``` r
 ri_setDatadir(testDatadir)
+#> Error in ri_setDatadir(testDatadir): could not find function "ri_setDatadir"
 ```
 
 
@@ -229,12 +256,12 @@ default collection.
 
 ``` r
 ri_setCollection(test_collection)
-#> Error in ri_setCollection(test_collection): ri_setcollection: session does not exists
+#> Error in ri_setCollection(test_collection): could not find function "ri_setCollection"
 ```
 
 ``` r
 ri_put(filename = file.path(testDatadir, "datafile.rds"))
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_put(filename = file.path(testDatadir, "datafile.rds")): could not find function "ri_put"
 ```
 
 This stores the datafile.rds file as object in the default collection.
@@ -244,7 +271,7 @@ available
 
 ``` r
 ri_listDataObjects()
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_listDataObjects(): could not find function "ri_listDataObjects"
 ```
 
 Overwriting and existing object is not allowed, this results in an
@@ -255,14 +282,15 @@ be forced
 ``` r
 # results in an error
 try(ri_put(filename = file.path(testDatadir, "datafile.rds")))
-#> Error in ri_getCollection() : collection not set
+#> Error in ri_put(filename = file.path(testDatadir, "datafile.rds")) : 
+#>   could not find function "ri_put"
 ```
 
 ``` r
 
 # this works
 ri_put(filename = file.path(testDatadir, "datafile.rds"), overwrite = TRUE)
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_put(filename = file.path(testDatadir, "datafile.rds"), overwrite = TRUE): could not find function "ri_put"
 ```
 
 Now that the data is stored in iRODS you can remove the local file if
@@ -284,7 +312,7 @@ locally in the data directory defined above.
 
 ``` r
 ri_get("datafile.rds")
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_get("datafile.rds"): could not find function "ri_get"
 ```
 And now you can read and process the data
 
@@ -292,7 +320,7 @@ And now you can read and process the data
 ``` r
 x <- readRDS(file.path(testDatadir, "datafile.rds"))
 #> Warning in gzfile(file, "rb"): cannot open compressed file
-#> '/tmp/RtmpVeUX5Q/data/datafile.rds', probable reason 'No such file or
+#> '/tmp/RtmpyT5cIm/data/datafile.rds', probable reason 'No such file or
 #> directory'
 #> Error in gzfile(file, "rb"): cannot open the connection
 ```
@@ -320,21 +348,21 @@ existing file or rename it
 ``` r
 # the file allready exists, so this results in an error
 try(ri_get("datafile.rds"))
-#> Error in ri_getCollection() : collection not set
+#> Error in ri_get("datafile.rds") : could not find function "ri_get"
 ```
 
 ``` r
 
 # overwrite te file
 ri_get("datafile.rds", overwrite = TRUE)
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_get("datafile.rds", overwrite = TRUE): could not find function "ri_get"
 ```
 
 ``` r
 
 # or use different file anme
 ri_get("datafile.rds", filename = "datafile2.rds")
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_get("datafile.rds", filename = "datafile2.rds"): could not find function "ri_get"
 ```
 
 # Manage meta data
@@ -355,7 +383,7 @@ we execute:
 
 ``` r
 ri_metaAdd(object = "datafile.rds", attribute = "attr1", value = "val1")
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_metaAdd(object = "datafile.rds", attribute = "attr1", value = "val1"): could not find function "ri_metaAdd"
 ```
 In above command we assume that `datafile.rds` is in the default
 collection. For an AVU triple, you must provide an attribute and
@@ -380,19 +408,19 @@ data.frame gives NA values for units which are NULL.
 ``` r
 # first add some more meta data
 ri_metaAdd(object = "datafile.rds", attribute = "attr2", value = "val2")
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_metaAdd(object = "datafile.rds", attribute = "attr2", value = "val2"): could not find function "ri_metaAdd"
 ```
 
 ``` r
 ri_metaAdd(object = "datafile.rds", attribute = "attr3", value = "val3", units = "unit1")
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_metaAdd(object = "datafile.rds", attribute = "attr3", value = "val3", : could not find function "ri_metaAdd"
 ```
 
 ``` r
 
 # get meta data
 meta <- ri_metaGet("datafile.rds")
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_metaGet("datafile.rds"): could not find function "ri_metaGet"
 ```
 
 ``` r
@@ -406,12 +434,12 @@ You can also delete meta triples from an object.
 ``` r
 
 ri_metaRemove("datafile.rds", attribute  = "attr3", value = "val3", units = "unit1")
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_metaRemove("datafile.rds", attribute = "attr3", value = "val3", : could not find function "ri_metaRemove"
 ```
 
 ``` r
 meta <- ri_metaGet("datafile.rds")
-#> Error in ri_getCollection(): collection not set
+#> Error in ri_metaGet("datafile.rds"): could not find function "ri_metaGet"
 ```
 
 ``` r
