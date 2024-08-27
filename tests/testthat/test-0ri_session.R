@@ -12,7 +12,7 @@ test_that("correct function",{
               ri_session(env)
               session <- get("session",env=.ricmdEnv)
               expect_true(typeof(session)=="environment")
-              is_valid_session(session)
+              ri_test_valid_session(session)
               destroySession()
 
 })
