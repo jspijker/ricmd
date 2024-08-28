@@ -10,7 +10,7 @@ test_that("valid function arguments",{
 
 test_that("rm in default collection",{
 
-              ri_session()
+              ri_session(env)
               ri_setCollection(testColl)
               session <- getSession()
               
@@ -39,7 +39,7 @@ test_that("rm in default collection",{
 
 test_that("rm in default collection",{
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               thisTestColl <- file.path(testColl,"testget")
               ri_createCollection(thisTestColl)

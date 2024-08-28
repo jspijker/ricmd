@@ -3,7 +3,7 @@ context("avu-helpers")
 
 test_that("avuStore", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -34,7 +34,7 @@ test_that("avuStore", {
 
 test_that("avuStoreLst",{
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -62,7 +62,7 @@ test_that("avuStoreLst",{
 
 test_that("avuExists", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -113,7 +113,7 @@ test_that("avuExistsLst",{
 test_that("avuGet",{
 
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -121,6 +121,10 @@ test_that("avuGet",{
               saveRDS(x,fname.x)
               ri_put(fname.x)
               objname <- basename(fname.x)
+
+              l <- avuGet(object=objname,collection=testColl)
+              expect_equal(length(l), 2)
+              expect_equal(length(l$avu), 0)
 
               avuStore(objname,testColl,attribute="attr1",value="val1")
               avuStore(objname,testColl,attribute="attr2",value="val2",units="unit1")
@@ -143,7 +147,7 @@ test_that("avuGet",{
 
 test_that("avuRemove", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -173,7 +177,7 @@ test_that("avuRemove", {
 })
 
 
-test_that("avuAddLst",{
+test_that("avuAddLst", {
               l <- default.lst
               l <- avuAddLst(l,attribute="key3",value="val3")
               l <- avuAddLst(l,attribute="key4",value="val4",units="unit4")
@@ -188,7 +192,7 @@ test_that("avuAddLst",{
 
 test_that("avu2df", {
 
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               x <- rnorm (10)
@@ -197,6 +201,14 @@ test_that("avu2df", {
               objname <- basename(fname.x)
               ri_put(fname.x)
 
+              # no meta available
+              lst <- avuGet(objname,testColl)
+              lst.df <- avu2df(lst)
+              expect_equal(nrow(lst.df), 0)
+              expect_equal(attr(lst.df,"object"),objname)
+              expect_equal(attr(lst.df,"collection"),testColl)
+
+              # add meta data, and test again
               ri_metaAdd(objname,attribute="attr1",value="val1")
               ri_metaAdd(objname,attribute="attr2",value="val2",unit="unit2")
 

@@ -14,7 +14,29 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, echo = FALSE, messages = FALSE}
+library(ricmd)
+
+if (!ri_test_check_docker()) {
+    stop("Docker binary not found")
+}
+
+irods_ip <- ri_test_get_catalog_provider_ip()
+if (!ri_test_auth_file_exists()) ri_test_create_auth_file()
+env <- ri_test_create_demo_env(irods_ip)
+
+irods <- import("irods.session")
+session <- irods$iRODSSession(irods_env_file = env)
+
+if (!ri_test_valid_session(session)) {
+    stop("No valid iRODS session")
+}
+
+irods_user <- session$username
+irods_zone <- session$zone
+irods_env_file <- env
+
+rm(session)
 ```
 
 # Introduction
@@ -114,11 +136,12 @@ assume that your iRODS environment is set up properly and that you
 have the python iRODS client in place.
 
 To start an iRODS session from within R you exexcute the following
-commands:
+command. The irods\_env\_file usually points to
+~/.irods/irods\_environment.json.
 
 ```{r}
 library(ricmd)
-ri_session()
+ri_session(irods_env_file)
 ```
 
 Executing this command creates a hidden environment wich contains the
@@ -127,11 +150,14 @@ to the session class from the pyton library and contains all the methods
 for working with iRODS.
 
 After initiating the iRODS session one must set the default
-collection:
+collection. In our case we use the home collection of the user and we
+asume that the variables irods_zone and irods_user contain the name of
+the iRODS zone and user respectively.
 
 ```{r}
-currentCollection <- system2("ipwd", stdout = TRUE)
-ri_setCollection(currentCollection)
+my_collection <- file.path("",irods_zone, "home", irods_user)
+my_collection
+ri_setCollection(my_collection)
 ```
 
 The name of the collection always start with the name of the zone, in
@@ -151,7 +177,8 @@ ri_getCollection()
 A new data collection can be created with
 
 ```{r}
-ri_createCollection(file.path(currentCollection, "tests"))
+test_collection <- file.path(my_collection, "tests")
+ri_createCollection(test_collection)
 ```
 
 The only argument of ri\_createCollection is the full path to the new
@@ -167,7 +194,7 @@ ri_listSubCollections()
 To remove a collection, the ri\_removeCollection command can be used:
 
 ```{r eval=FALSE}
-ri_removeCollection(file.path(currentCollection, "tests"))
+ri_removeCollection(test_collection)
 
 ```
 
@@ -196,11 +223,11 @@ store a data file in that directory:
 
 ```{r}
 
-testDatadir <- file.path(tempdir(),'data')
+testDatadir <- file.path(tempdir(), 'data')
 dir.create(testDatadir)
 
 x <- rnorm(10)
-saveRDS(x,file.path(testDatadir,"datafile.rds"))
+saveRDS(x,file.path(testDatadir, "datafile.rds"))
 
 ```
 
@@ -220,9 +247,8 @@ default collection.
 
 
 ```{r eval=TRUE}
-ri_createCollection(file.path(currentCollection, "tests"))
-ri_setCollection(file.path(currentCollection, "tests"))
-ri_put(filename=file.path(testDatadir,"datafile.rds"))
+ri_setCollection(test_collection)
+ri_put(filename = file.path(testDatadir, "datafile.rds"))
 ```
 
 This stores the datafile.rds file as object in the default collection.
@@ -239,17 +265,17 @@ be forced
 
 ```{r eval=TRUE}
 # results in an error
-try(ri_put(filename=file.path(testDatadir,"datafile.rds")))
+try(ri_put(filename = file.path(testDatadir, "datafile.rds")))
 
 # this works
-ri_put(filename=file.path(testDatadir,"datafile.rds"),overwrite=TRUE)
+ri_put(filename = file.path(testDatadir, "datafile.rds"), overwrite = TRUE)
 ```
 
 Now that the data is stored in iRODS you can remove the local file if
 you want.
 
 ```{r}
-unlink(file.path(testDatadir,"datafile.rds"))
+unlink(file.path(testDatadir, "datafile.rds"))
 ```
 
 
@@ -266,7 +292,7 @@ ri_get("datafile.rds")
 And now you can read and process the data
 
 ```{r}
-x <- readRDS(file.path(testDatadir,"datafile.rds"))
+x <- readRDS(file.path(testDatadir, "datafile.rds"))
 print(length(x))
 ```
 
@@ -275,8 +301,8 @@ different filename, you can use the datadir and filename arguments of
 this function
 
 ```{r eval=FALSE}
-ri_get("datafile.rds",datadir="/path/to/other/directory",
-    filename="differentFileName.rds")
+ri_get("datafile.rds", datadir = "/path/to/other/directory",
+    filename = "differentFileName.rds")
 ```
 
 The ri\_get does not overwrite existing files by default. If you want
@@ -288,10 +314,10 @@ existing file or rename it
 try(ri_get("datafile.rds"))
 
 # overwrite te file
-ri_get("datafile.rds",overwrite=TRUE)
+ri_get("datafile.rds", overwrite = TRUE)
 
 # or use different file anme
-ri_get("datafile.rds",filename="datafile2.rds")
+ri_get("datafile.rds", filename = "datafile2.rds")
 ```
 
 # Manage meta data
@@ -310,7 +336,7 @@ want to add meta data to the `datafile.rds` data object created above,
 we execute:
 
 ```{r}
-ri_metaAdd(object="datafile.rds",attribute="attr1",value="val1")
+ri_metaAdd(object = "datafile.rds", attribute = "attr1", value = "val1")
 ```
 In above command we assume that `datafile.rds` is in the default
 collection. For an AVU triple, you must provide an attribute and
@@ -320,8 +346,8 @@ If you want to add meta data to an object in a different collection,
 you must provide the collection argument:
 
 ```{r eval=FALSE}
-ri_metaAdd(object="otherObject",attribute="attr1",value="val4",
-           collection="/zone/otherCollection")
+ri_metaAdd(object = "otherObject", attribute = "attr1", value = "val4",
+           collection = "/zone/otherCollection")
 ```
 
 With the ri\_metaGet you can get all the meta data from an object as
@@ -332,8 +358,8 @@ data.frame gives NA values for units which are NULL.
 
 ```{r}
 # first add some more meta data
-ri_metaAdd(object="datafile.rds",attribute="attr2",value="val2")
-ri_metaAdd(object="datafile.rds",attribute="attr3",value="val3",units="unit1")
+ri_metaAdd(object = "datafile.rds", attribute = "attr2", value = "val2")
+ri_metaAdd(object = "datafile.rds", attribute = "attr3", value = "val3", units = "unit1")
 
 # get meta data
 meta <- ri_metaGet("datafile.rds")
@@ -345,7 +371,7 @@ You can also delete meta triples from an object.
 
 ```{r}
 
-ri_metaRemove("datafile.rds",attribute="attr3",value="val3",units="unit1")
+ri_metaRemove("datafile.rds", attribute  = "attr3", value = "val3", units = "unit1")
 meta <- ri_metaGet("datafile.rds")
 print(meta)
 
@@ -356,13 +382,12 @@ print(meta)
 # Let's clean all the stuff this vignettes creates
 
 library(reticulate)
-irods <- import("irods.session")
-env <- path.expand('~/.irods/irods_environment.json')
-session <- irods$iRODSSession(irods_env_file=env)
-session$collections$remove(paste0(currentCollection, "tests"))
+#irods <- import("irods.session")
+#env <- path.expand("~/.irods/irods_environment.json")
+session <- irods$iRODSSession(irods_env_file = env)
+session$collections$remove(test_collection)
 rm(session)
-unlink(testDatadir,recursive=TRUE)
-
+unlink(testDatadir, recursive = TRUE)
 ```
 
 

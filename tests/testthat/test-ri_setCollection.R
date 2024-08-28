@@ -4,7 +4,7 @@ test_that("valid arguments", {
 
               expect_error(ri_setCollection(testColl))
 
-              ri_session()
+              ri_session(env)
 
               expect_error(ri_setCollection("/nonexistingzone/nonexistencollection"))
               expect_error(ri_setCollection(1))
@@ -13,7 +13,7 @@ test_that("valid arguments", {
 
 test_that("correct functioning", {
 
-              ri_session()
+              ri_session(env)
               ri_setCollection(testColl)
               coll <- get("collection",env=.ricmdEnv)
               expect_equal(testColl,coll)

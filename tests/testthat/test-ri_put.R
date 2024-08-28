@@ -16,7 +16,7 @@ test_that("valid arguments", {
 
 test_that("simple data object storage", {
 
-              ri_session()
+              ri_session(env)
               ri_setCollection(testColl)
               session <- getSession()
               
@@ -40,7 +40,7 @@ test_that("simple data object storage", {
 test_that("specified data object storage", {
 
               newColl <- paste(testColl,"test1",sep="/")
-              ri_session()
+              ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
               ri_createCollection(newColl)
@@ -65,7 +65,7 @@ test_that("specified data object storage", {
 
 test_that("overwrite data object", {
 
-              ri_session()
+              ri_session(env)
               ri_setCollection(testColl)
               session <- getSession()
               
