@@ -1,78 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/ricmd.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_collectionExists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_createCollection.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_get.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_getCollection.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_listDataObjects.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_listSubCollections.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_metaAdd.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_metaExists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_metaGet.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_metaRemove.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_objectExists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_put.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_removeCollection.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_rm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_session.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_setCollection.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ri_setDatadir.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/ricmd.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/ri_collectionExists.html</loc></url>
+<url><loc>/reference/ri_createCollection.html</loc></url>
+<url><loc>/reference/ri_get.html</loc></url>
+<url><loc>/reference/ri_getCollection.html</loc></url>
+<url><loc>/reference/ri_listDataObjects.html</loc></url>
+<url><loc>/reference/ri_listSubCollections.html</loc></url>
+<url><loc>/reference/ri_metaAdd.html</loc></url>
+<url><loc>/reference/ri_metaExists.html</loc></url>
+<url><loc>/reference/ri_metaGet.html</loc></url>
+<url><loc>/reference/ri_metaRemove.html</loc></url>
+<url><loc>/reference/ri_objectExists.html</loc></url>
+<url><loc>/reference/ri_put.html</loc></url>
+<url><loc>/reference/ri_removeCollection.html</loc></url>
+<url><loc>/reference/ri_rm.html</loc></url>
+<url><loc>/reference/ri_session.html</loc></url>
+<url><loc>/reference/ri_setCollection.html</loc></url>
+<url><loc>/reference/ri_setDatadir.html</loc></url>
+<url><loc>/reference/ri_test_auth_file_exists.html</loc></url>
+<url><loc>/reference/ri_test_check_docker.html</loc></url>
+<url><loc>/reference/ri_test_create_auth_file.html</loc></url>
+<url><loc>/reference/ri_test_create_demo_env.html</loc></url>
+<url><loc>/reference/ri_test_get_catalog_provider_ip.html</loc></url>
+<url><loc>/reference/ri_test_valid_ip.html</loc></url>
+<url><loc>/reference/ri_test_valid_session.html</loc></url>
 </urlset>
+
