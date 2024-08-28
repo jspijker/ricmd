@@ -4,7 +4,7 @@
 \alias{ri_test_get_catalog_provider_ip}
 \title{ricmd test function, get catalog provider ip}
 \usage{
-ri_test_get_catalog_provider_ip(verbose = TRUE)
+ri_test_get_catalog_provider_ip(verbose = FALSE)
 }
 \arguments{
 \item{verbose}{Be verbose}
