@@ -20,26 +20,25 @@ ri_metaRemove <- function(object,attribute,value,collection=ri_getCollection(),
     }
 
     if(!ri_objectExists(object,collection))
-        stop("rmetaRemovei_metaAdd: object does not exists")
+        stop("ri_metaRemovei: object does not exists")
 
     if(!is.character(collection)) {
-        stop("rmetaRemovei_metaAdd: collection is not character")
+        stop("ri_metaRemove: collection is not character")
     }
 
     if(!is.character(attribute)) {
-        stop("rmetaRemovei_metaAdd: attribute is not character")
+        stop("ri_metaRemove: attribute is not character")
     }
 
     if(!is.character(value)) {
-        stop("rmetaRemovei_metaAdd: value is not character")
+        stop("ri_metaRemove: value is not character")
     }
 
     if(!is.null(units)) {
         if(!is.character(units)) {
-            stop("rmetaRemovei_metaAdd: units is not character nor NULL")
+            stop("ri_metaRemove: units is not character nor NULL")
         }
     }
-
 
     avuRemove(object,collection,attribute,value,units)
     return()
