@@ -122,7 +122,7 @@ iRODS configuration and the session object. This session object refers
 to the session class from the pyton library and contains all the methods
 for working with iRODS.
 
-To test if the session is valid and you have acces to the iRODS
+To test if the session is valid and you have access to the iRODS
 cluster you can use the ri\_validsession function:
 
 
@@ -216,6 +216,7 @@ store a data file in that directory:
 
 testDatadir <- file.path(tempdir(), 'data')
 dir.create(testDatadir)
+#> Warning in dir.create(testDatadir): '/tmp/RtmpHgiaJ8/data' already exists
 
 x <- rnorm(10)
 saveRDS(x,file.path(testDatadir, "datafile.rds"))

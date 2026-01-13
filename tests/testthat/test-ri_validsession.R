@@ -1,10 +1,4 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
-})
-
-
-
-test_that("valid session",{
+test_that("valid session", {
 
               ri_session(env)
               expect_true(ri_validsession())
@@ -12,7 +6,7 @@ test_that("valid session",{
 
 })
 
-test_that("Invalid session",{
+test_that("Invalid session", {
 
               # create a 'wrong' env file
               env <- ri_test_create_demo_env(irods_ip,
