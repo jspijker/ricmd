@@ -155,7 +155,8 @@ ri_test_create_auth_file <- function( irods_dir = path.expand("~/.irods"),
 #'
 #' @export
 
-ri_test_create_demo_env <- function(irods_ip) {
+ri_test_create_demo_env <- function(irods_ip, username = "rods", 
+                                    password = "rods") {
 
     if(!is.character(irods_ip)) {
         stop("create_demo_env: ip must be character")
@@ -165,8 +166,8 @@ ri_test_create_demo_env <- function(irods_ip) {
     }
 
     irods_env <- list(irods_host = irods_ip,
-                      irods_user_name = "rods",
-                      irods_password = "rods",
+                      irods_user_name = username,
+                      irods_password = password,
                       irods_port = 1247,
                       irods_zone_name = "tempZone")
 

@@ -25,9 +25,8 @@
 ri_getCollection <- function() {
 
     if (!testCollection()) {
-        stop("collection not set")
+        stop("collection not set, forgot to run ri_setCollection()?")
     }
-
 
     coll <- get("collection", envir = .ricmdEnv)
     return(coll)
