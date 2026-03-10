@@ -4,7 +4,7 @@
 \alias{ri_test_create_demo_env}
 \title{ricmd test function, creates demo environment file}
 \usage{
-ri_test_create_demo_env(irods_ip)
+ri_test_create_demo_env(irods_ip, username = "rods", password = "rods")
 }
 \arguments{
 \item{irods_dir}{iRODS configuration dir, defailts ~/.irods}

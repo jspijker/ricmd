@@ -149,6 +149,13 @@ iRODS configuration and the session object. This session object refers
 to the session class from the pyton library and contains all the methods
 for working with iRODS.
 
+To test if the session is valid and you have access to the iRODS
+cluster you can use the ri\_validsession function:
+
+```{r}
+ri_validsession()
+```
+
 After initiating the iRODS session one must set the default
 collection. In our case we use the home collection of the user and we
 asume that the variables irods_zone and irods_user contain the name of
