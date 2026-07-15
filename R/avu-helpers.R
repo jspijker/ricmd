@@ -62,7 +62,7 @@ avuRemove <- function(collection, object=NULL,
                       attribute, value,units=NULL) {
     # remove an avu tripple from a data object
 
-    if (avuExists(collection, object, attribute,value,units)) {
+    if (avuExists(collection, object, attribute, value, units)) {
 
         session <- getSession()
 
@@ -74,9 +74,7 @@ avuRemove <- function(collection, object=NULL,
             obj <- session$data_objects$get(objpath)
         }
 
-        obj <- session$data_objects$get(objpath)
-        obj$metadata$remove(attribute,value,
-                            units)
+        obj$metadata$remove(attribute,value, units)
     }
 }
 
@@ -85,8 +83,11 @@ avuRemove <- function(collection, object=NULL,
 # avu list functions
 ######################################################################
 
-avuStoreLst <- function(collection, object, l){
-    # stores a list of avu-triples to a data object
+avuStoreLst <- function(collection, object = NULL, l = NULL){
+
+    if (is.null(l)) {
+        stop("avuStoreLst: no avu-list provided")
+    }
 
     l.obj <- avuGet(collection, object)
     for (i in l$avu) {
