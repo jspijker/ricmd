@@ -38,9 +38,13 @@ avuGet <- function(collection, object = NULL) {
     if (is.null(object)) {
         objpath <- file.path(collection)
         obj <- session$collections$get(collection)
+        objname <- NULL
+        metatype <- "collection"
     } else {
         objpath <- file.path(collection, object)
         obj <- session$data_objects$get(objpath)
+        objname <- object
+        metatype <- "object"
     }
 
     #obj <- session$data_objects$get(file.path(collection,object))
@@ -53,8 +57,9 @@ avuGet <- function(collection, object = NULL) {
                                    units=ifelse(is.null(i$units),NA,i$units))
         avulst$key[[i$name]] <- append(avulst$key[[i$name]],ndx)
     }
-    attr(avulst,"object") <- object
+    attr(avulst,"object") <- objname
     attr(avulst,"collection") <- collection
+    attr(avulst,"metatype") <- metatype
     return(avulst)
 }
 

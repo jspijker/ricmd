@@ -234,6 +234,9 @@ test_that("avuGet, object meta data",{
               expect_true(l$avu[[2]]$attribute=="attr2")
               expect_true(l$key$attr2==2)
 
+              expect_equal(attr(l,"object"),objname)
+              expect_equal(attr(l,"collection"),testColl)
+              expect_equal(attr(l,"metatype"),"object")
 
               if(ri_objectExists(basename(fname.x))) {
                   session$data_objects$unlink(paste0(testColl,"/",basename(fname.x)))
@@ -260,6 +263,10 @@ test_that("avuGet, collection meta data",{
     expect_true(is.na(l$avu[[1]]$units))
     expect_true(l$avu[[2]]$attribute == "attr2")
     expect_true(l$key$attr2 == 2)
+
+    expect_null(attr(l,"object"))
+    expect_equal(attr(l,"collection"),testColl)
+    expect_equal(attr(l,"metatype"),"collection")
 
     session$collections$remove(metacoll)
     destroySession()
