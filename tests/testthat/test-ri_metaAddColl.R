@@ -17,3 +17,21 @@ test_that("valid arguments", {
     destroySession()
 
 })
+
+
+test_that("correct functioning", {
+
+    ri_session(env)
+    ri_createCollection(metacoll)
+    session <- getSession()
+
+    ri_metaAddColl(collection = metacoll, attribute = "attr1", value = "val1")
+    obj <- session$collections$get(metacoll)
+    key1 <- obj$metadata$get_one("attr1")
+    expect_equal(key1$value,"val1")
+
+    ri_removeCollection(metacoll)
+    destroySession()
+
+
+})
