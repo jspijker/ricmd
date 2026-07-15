@@ -5,31 +5,100 @@
 # representation of the avu-triple meta data from an iRODS object.
 ######################################################################
 
-avuStore <- function(object,collection,attribute,value,units=NULL) {
+
+######################################################################
+# iRODS obj functions
+######################################################################
+
+avuStore <- function(collection, object = NULL, attribute,
+                     value, units = NULL) {
     # Stores an avu triple for a data object
 
     session <- getSession()
-    objpath <- file.path(collection,object)
-    obj <- session$data_objects$get(objpath)
-    if(!avuExists(object,collection,attribute,value,units)) {
-        obj$metadata$add(attribute,value,units)
+    if (is.null(object)) {
+        objpath <- file.path(collection)
+        obj <- session$collections$get(collection)
+    } else {
+        objpath <- file.path(collection, object)
+        obj <- session$data_objects$get(objpath)
+    }
+
+    if (!avuExists(collection, object, attribute, value, units)) {
+        obj$metadata$add(attribute, value, units)
     }
 
 }
 
+avuGet <- function(collection, object = NULL) {
+    # get all avu-tripples from a data object, store the avu-tripples
+    # in a list
 
-avuStoreLst <- function(object,collection,l){
+    session <- getSession()
+
+    if (is.null(object)) {
+        objpath <- file.path(collection)
+        obj <- session$collections$get(collection)
+    } else {
+        objpath <- file.path(collection, object)
+        obj <- session$data_objects$get(objpath)
+    }
+
+    #obj <- session$data_objects$get(file.path(collection,object))
+    m <- obj$metadata$items()
+    avulst <- list(avu=list(),key=list())
+    for (i in m) {
+        ndx <- length(avulst$avu)+1
+        avulst$avu[[ndx]] <- list(attribute=i$name,
+                                   value=i$value,
+                                   units=ifelse(is.null(i$units),NA,i$units))
+        avulst$key[[i$name]] <- append(avulst$key[[i$name]],ndx)
+    }
+    attr(avulst,"object") <- object
+    attr(avulst,"collection") <- collection
+    return(avulst)
+}
+
+avuRemove <- function(collection, object=NULL,
+                      attribute, value,units=NULL) {
+    # remove an avu tripple from a data object
+
+    if (avuExists(collection, object, attribute,value,units)) {
+
+        session <- getSession()
+
+        if (is.null(object)) {
+            objpath <- file.path(collection)
+            obj <- session$collections$get(collection)
+        } else {
+            objpath <- file.path(collection, object)
+            obj <- session$data_objects$get(objpath)
+        }
+
+        obj <- session$data_objects$get(objpath)
+        obj$metadata$remove(attribute,value,
+                            units)
+    }
+}
+
+
+######################################################################
+# avu list functions
+######################################################################
+
+avuStoreLst <- function(collection, object, l){
     # stores a list of avu-triples to a data object
 
-    l.obj <- avuGet(object,collection)
-    for(i in l$avu) {
-        if(!avuExistsLst(l.obj,attribute=i$attribute,value=i$value,units=i$unit)) {
-            if(is.na(i$units)) {
-                avuStore(object,collection,attribute=i$attribute,
-                         value=i$value)
+    l.obj <- avuGet(collection, object)
+    for (i in l$avu) {
+        if (!avuExistsLst(l.obj, attribute = i$attribute, value = i$value, units = i$unit)) {
+            if (is.na(i$units)) {
+                avuStore(collection, object,
+                         attribute = i$attribute,
+                         value = i$value)
             } else {
-                avuStore(object,collection,attribute=i$attribute,
-                         value=i$value,units=i$units)
+                avuStore(collection, object,
+                         attribute = i$attribute,
+                         value = i$value, units = i$units)
             }
         }
     }
@@ -37,11 +106,11 @@ avuStoreLst <- function(object,collection,l){
 
 
 
-avuExists <- function(object,collection,attribute,value,units=NULL) {
+avuExists <- function(collection, object = NULL, attribute, value, units=NULL) {
     # check if an avu-tripple allready exists.
 
-    l <- avuGet(object,collection)
-    doesExist <- avuExistsLst(l,attribute,value,units)
+    l <- avuGet(collection, object)
+    doesExist <- avuExistsLst(l, attribute, value, units)
     return(doesExist)
 }
 
@@ -68,43 +137,7 @@ avuExistsLst <- function(l,attribute,value,units=NULL) {
 }
 
 
-avuGet <- function(object,collection) {
-    # get all avu-tripples from a data object, store the avu-tripples
-    # in a list
 
-    session <- getSession()
-    obj <- session$data_objects$get(file.path(collection,object))
-    m <- obj$metadata$items()
-    avulst <- list(avu=list(),key=list())
-    for (i in m) {
-        ndx <- length(avulst$avu)+1
-        avulst$avu[[ndx]] <- list(attribute=i$name,
-                                   value=i$value,
-                                   units=ifelse(is.null(i$units),NA,i$units))
-        avulst$key[[i$name]] <- append(avulst$key[[i$name]],ndx)
-    }
-    attr(avulst,"object") <- object
-    attr(avulst,"collection") <- collection
-    return(avulst)
-
-
-
-
-}
-
-avuRemove <- function(object,collection,attribute,value,units=NULL) {
-    # remove an avu tripple from a data object
-
-    if(avuExists(object,collection,attribute,value,units)) {
-
-        session <- getSession()
-        objpath <- file.path(collection,object)
-
-        obj <- session$data_objects$get(objpath)
-        obj$metadata$remove(attribute,value,
-                            units)
-    }
-}
 
 avuAddLst <- function(l,attribute,value,units=NA){
     # add an avu-triple to a list with avu-tripples
