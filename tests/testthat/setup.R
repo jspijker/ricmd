@@ -43,6 +43,14 @@ if (!ri_test_valid_session(session)) {
 
 testColl <- file.path("",session$zone,'home',session$username,"tests")
 session$collections$create(testColl)
+# collection for meta data tests, this collection will be created and
+# removed in each test, so it is not needed to be cleaned up here.
+metacoll <- file.path(testColl,"metacol")
+res <- try(coll <- session$collections$get(collection),silent=TRUE)
+if(class(res)[1] == "irods.collection.iRODSCollection") {
+    session$collections$remove(metacoll)
+}
+
 rm(session)
 
 testDatadir <- file.path(tempdir(),'data')

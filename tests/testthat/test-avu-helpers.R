@@ -45,17 +45,7 @@ test_that("avuStore, store collection meta data", {
     session <- getSession()
     ri_setCollection(testColl)
 
-    metacoll <- file.path(testColl, "testmetacol")
-
-    # if test fails, remove the collection first
-    if (ri_collectionExists(metacoll)) {
-        session$collections$remove(metacoll)
-    }
-
-    expect_false(ri_collectionExists(metacoll))
-
     ri_createCollection(metacoll)
-    expect_true(ri_collectionExists(metacoll))
 
     colobj <- session$collections$get(metacoll)
     colobjlst <- colobj$metadata$items()
@@ -118,18 +108,8 @@ test_that("avuStoreLst, store collection meta data", {
     ri_session(env)
     session <- getSession()
 
-    expect_true(ri_collectionExists(testColl))
-
     ri_setCollection(testColl)
-
-    metacoll <- file.path(testColl, "testmetacol")
-
-    # if test fails, remove the collection first
-    if (ri_collectionExists(metacoll)) {
-        session$collections$remove(metacoll)
-    }
     ri_createCollection(metacoll)
-
 
     expect_error(avuStoreLst(metacoll, default.lst))
     avuStoreLst(metacoll, l  = default.lst)
@@ -192,14 +172,6 @@ test_that("avuExists, test metadata collection", {
     ri_session(env)
     session <- getSession()
     ri_setCollection(testColl)
-
-    metacoll <- file.path(testColl, "testmetacol")
-
-    # if test fails, remove the collection first
-    if (ri_collectionExists(metacoll)) {
-        session$collections$remove(metacoll)
-    }
-
     ri_createCollection(metacoll)
 
     avuStore(metacoll, attribute = "attr1", value = "val1")
@@ -279,14 +251,6 @@ test_that("avuGet, collection meta data",{
     ri_session(env)
     session <- getSession()
     ri_setCollection(testColl)
-
-    metacoll <- file.path(testColl, "testmetacol")
-
-    # if test fails, remove the collection first
-    if (ri_collectionExists(metacoll)) {
-        session$collections$remove(metacoll)
-    }
-
     ri_createCollection(metacoll)
 
     avuStore(metacoll, attribute = "attr1", value = "val1")
@@ -340,14 +304,6 @@ test_that("avuRemove, collection meta data", {
     ri_session(env)
     session <- getSession()
     ri_setCollection(testColl)
-
-    metacoll <- file.path(testColl, "testmetacol")
-
-    # if test fails, remove the collection first
-    if (ri_collectionExists(metacoll)) {
-        session$collections$remove(metacoll)
-    }
-
     ri_createCollection(metacoll)
 
     avuStore(metacoll, attribute = "attr1", value = "val1")
