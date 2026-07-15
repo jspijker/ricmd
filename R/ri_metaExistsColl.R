@@ -1,3 +1,22 @@
+#' Check if a metadata attribute exists for a collection
+#'
+#' Checks if an AVU triple already exists in the metadata of an iRODS
+#' collection
+#'
+#' @param collection name of the iRODS collection
+#' @param attribute name of the metadata attribute
+#' @param value value of the metadata attribute
+#' @param units (Optional) unit of the metadata attribute, will be NULL if not provided
+#' @return TRUE if the AVU triple exists, FALSE otherwise
+#'
+#' @details
+#' This function checks if a specific Attribute-Value-Units (AVU)
+#' triple exists in the metadata of an iRODS collection. It takes the
+#' collection name, attribute, value, and optionally units as input
+#' parameters. If the specified AVU triple exists in the collection's
+#' metadata, the function returns TRUE; otherwise, it returns FALSE.
+#'
+#' @export
 
 ri_metaExistsColl <- function(collection, attribute, value, units=NULL) {
 
