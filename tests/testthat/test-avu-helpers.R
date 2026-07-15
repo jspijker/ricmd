@@ -264,9 +264,9 @@ test_that("avuGet, collection meta data",{
     expect_true(l$avu[[2]]$attribute == "attr2")
     expect_true(l$key$attr2 == 2)
 
-    expect_null(attr(l,"object"))
-    expect_equal(attr(l,"collection"),testColl)
-    expect_equal(attr(l,"metatype"),"collection")
+    expect_null(attr(l, "object"))
+    expect_equal(attr(l, "collection"), metacoll)
+    expect_equal(attr(l, "metatype"), "collection")
 
     session$collections$remove(metacoll)
     destroySession()
