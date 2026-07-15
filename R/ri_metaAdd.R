@@ -72,7 +72,7 @@ ri_metaAdd <- function(object,attribute,value,collection=ri_getCollection(),
     }
 
     
-    avuStore(object,collection,attribute,value,units)
+    avuStore(collection, object, attribute, value, units)
 }
 
 

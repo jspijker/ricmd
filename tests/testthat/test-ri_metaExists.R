@@ -40,7 +40,7 @@ test_that("proper functioning", {
               ri_put(fname.x)
               objname <- basename(fname.x)
 
-              avuStore(objname,testColl,attribute="attr1",value="val1")
+              avuStore(testColl, objname, attribute = "attr1", value = "val1")
               expect_true(ri_metaExists(objname,attribute="attr1",value="val1"))
 
               if(ri_objectExists(basename(fname.x))) {

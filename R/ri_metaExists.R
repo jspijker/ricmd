@@ -43,7 +43,7 @@ ri_metaExists <- function(object,attribute,value,units=NULL,
         }
     }
 
-    res <- avuExists(object,collection,attribute,value,units)
+    res <- avuExists(collection, object, attribute, value, units)
     return(res)
 
 }
