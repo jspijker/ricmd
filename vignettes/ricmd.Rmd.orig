@@ -330,8 +330,8 @@ ri_get("datafile.rds", filename = "datafile2.rds")
 # Manage meta data
 
 In iRODS meta data, an AVU tripple, can be associated with users,
-collections and data objects. This package only supports meta data of
-data objects. Meta data of collections, users etc. is not supported.
+collections and data objects. This package supports meta data of data
+objects and collections. Meta data of users etc. is not supported.
 
 An AVU triple must be an unique combination of attribute, value,
 and unit. If two tripples have the same attribute, the value must
@@ -383,6 +383,44 @@ meta <- ri_metaGet("datafile.rds")
 print(meta)
 
 
+```
+
+The same workflow can be used for collections with the
+ri\_metaAddColl, ri\_metaGetColl, ri\_metaExistsColl and
+ri\_metaRemoveColl functions.
+
+To add meta data to a collection, use ri\_metaAddColl. The collection
+argument is mandatory and must be the full iRODS path.
+
+```{r}
+ri_metaAddColl(collection = test_collection, attribute = "coll_attr1", value = "coll_val1")
+ri_metaAddColl(collection = test_collection, attribute = "coll_attr2", value = "coll_val2", units = "unit2")
+```
+
+Use ri\_metaGetColl to retrieve all AVU tripples from the collection
+as a data.frame with attribute, value and units fields. If
+return\_list = TRUE, the internal AVU list is added as attribute
+"av" to the returned data.frame.
+
+```{r}
+meta_coll <- ri_metaGetColl(test_collection)
+print(meta_coll)
+```
+
+If needed, you can test if a specific AVU tripple exists in the
+collection with ri\_metaExistsColl.
+
+```{r}
+ri_metaExistsColl(collection = test_collection, attribute = "coll_attr1", value = "coll_val1")
+ri_metaExistsColl(collection = test_collection, attribute = "coll_attr2", value = "coll_val2", units = "unit2")
+```
+
+To remove a collection AVU tripple, use ri\_metaRemoveColl.
+
+```{r}
+ri_metaRemoveColl(collection = test_collection, attribute = "coll_attr2", value = "coll_val2", units = "unit2")
+meta_coll <- ri_metaGetColl(test_collection)
+print(meta_coll)
 ```
 
 ```{r echo=FALSE}
