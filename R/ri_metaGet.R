@@ -41,7 +41,7 @@ ri_metaGet <- function(object, collection=ri_getCollection(),
         stop("ri_metaGet: object does not exists")
     }
 
-    lst <- avuGet(object,collection)
+    lst <- avuGet(collection, object)
     lst.df <- avu2df(lst)
 
     if (return_list) {

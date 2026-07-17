@@ -40,7 +40,7 @@ ri_metaRemove <- function(object,attribute,value,collection=ri_getCollection(),
         }
     }
 
-    avuRemove(object,collection,attribute,value,units)
+    avuRemove(collection, object, attribute,value,units)
     return()
 
 }

@@ -19,31 +19,31 @@ ri_metaExists <- function(object,attribute,value,units=NULL,
 
 
     if(!is.character(object)) {
-        stop("ri_metaRemove: object is not character")
+        stop("ri_metaExists: object is not character")
     }
 
     if(!ri_objectExists(object,collection))
-        stop("rmetaRemovei_metaAdd: object does not exists")
+        stop("ri_metaExists: object does not exists")
 
     if(!is.character(collection)) {
-        stop("rmetaRemovei_metaAdd: collection is not character")
+        stop("ri_metaExists: collection is not character")
     }
 
     if(!is.character(attribute)) {
-        stop("rmetaRemovei_metaAdd: attribute is not character")
+        stop("ri_metaExists: attribute is not character")
     }
 
     if(!is.character(value)) {
-        stop("rmetaRemovei_metaAdd: value is not character")
+        stop("ri_metaExists: value is not character")
     }
 
     if(!is.null(units)) {
         if(!is.character(units)) {
-            stop("rmetaRemovei_metaAdd: units is not character nor NULL")
+            stop("ri_metaExists: units is not character nor NULL")
         }
     }
 
-    res <- avuExists(object,collection,attribute,value,units)
+    res <- avuExists(collection, object, attribute, value, units)
     return(res)
 
 }

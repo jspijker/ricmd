@@ -61,10 +61,10 @@ ri_test_get_catalog_provider_ip <- function(verbose = FALSE) {
 
 
     # check irods grid, get ip
-    catalog_provider <- "irods_demo-irods-catalog-provider-1"
+    catalog_provider <- "irods-demo-irods-catalog-provider-1"
 
     docker_cmd <- "docker"
-    docker_args <- paste("inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'",
+    docker_args <- paste(" inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'",
                          catalog_provider)
 
     suppressWarnings(

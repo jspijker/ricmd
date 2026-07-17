@@ -32,8 +32,6 @@ test_that("valid arguments", {
 
 test_that("proper functioning", {
 
-
-
               ri_session(env)
               session <- getSession()
               ri_setCollection(testColl)
@@ -46,16 +44,16 @@ test_that("proper functioning", {
               ri_metaAdd(objname,attribute="attr1",value="val1")
               ri_metaAdd(objname,attribute="attr1",value="val1",units="unit1")
               ri_metaAdd(objname,attribute="attr2",value="val2")
-              expect_true(avuExists(objname,testColl,attribute="attr1",value="val1"))
+              expect_true(avuExists(testColl, objname, attribute = "attr1", value = "val1"))
 
               ri_metaRemove(objname,attribute="attr1",value="val1")
-              expect_false(avuExists(objname,testColl,attribute="attr1",value="val1"))
-              expect_true(avuExists(objname,testColl,attribute="attr1",value="val1",units="unit1"))
+              expect_false(avuExists(testColl, objname, attribute = "attr1", value = "val1"))
+              expect_true(avuExists(testColl, objname, attribute = "attr1", value = "val1",units = "unit1"))
 
               ri_metaAdd(objname,attribute="attr1",value="val1")
               ri_metaRemove(objname,attribute="attr1",value="val1",units="unit1")
-              expect_true(avuExists(objname,testColl,attribute="attr1",value="val1"))
-              expect_false(avuExists(objname,testColl,attribute="attr1",value="val1",units="unit1"))
+              expect_true(avuExists(testColl, objname, attribute = "attr1", value = "val1"))
+              expect_false(avuExists(testColl, objname, attribute = "attr1", value = "val1", units = "unit1"))
 
 
               if(ri_objectExists(basename(fname.x))) {
