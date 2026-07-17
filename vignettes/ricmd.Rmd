@@ -10,27 +10,6 @@ vignette: >
 
 
 
-```
-#> Loading required package: reticulate
-#> Warning: package 'reticulate' was built under R version 4.5.2
-#> loading ricmd python3 environment
-#> use 'reticulate::py_config()' to see information about your python environment
-#> Error in `ri_test_get_catalog_provider_ip()`:
-#> ! ERROR, no docker irods catalog provider found
-#> Error:
-#> ! object 'irods_ip' not found
-#> Error:
-#> ! object 'env' not found
-#> Error:
-#> ! No valid iRODS session
-#> Error:
-#> ! object 'session' not found
-#> Error:
-#> ! object 'session' not found
-#> Error:
-#> ! object 'env' not found
-#> Warning in rm(session): object 'session' not found
-```
 
 # Introduction
 
@@ -136,8 +115,6 @@ command. The irods\_env\_file usually points to
 ``` r
 library(ricmd)
 ri_session(irods_env_file)
-#> Error:
-#> ! object 'irods_env_file' not found
 ```
 
 Executing this command creates a hidden environment wich contains the
@@ -151,8 +128,7 @@ cluster you can use the ri\_validsession function:
 
 ``` r
 ri_validsession()
-#> Error in `get()`:
-#> ! object 'session' not found
+#> [1] TRUE
 ```
 
 After initiating the iRODS session one must set the default
@@ -163,14 +139,9 @@ the iRODS zone and user respectively.
 
 ``` r
 my_collection <- file.path("",irods_zone, "home", irods_user)
-#> Error:
-#> ! object 'irods_zone' not found
 my_collection
-#> Error:
-#> ! object 'my_collection' not found
+#> [1] "/tempZone/home/rods"
 ri_setCollection(my_collection)
-#> Error:
-#> ! object 'my_collection' not found
 ```
 
 The name of the collection always start with the name of the zone, in
@@ -184,8 +155,7 @@ want check which collection is the default collection, then use:
 
 ``` r
 ri_getCollection()
-#> Error in `get()`:
-#> ! object 'collection' not found
+#> [1] "/tempZone/home/rods"
 ```
 
 # Creating a new collection
@@ -195,11 +165,7 @@ A new data collection can be created with
 
 ``` r
 test_collection <- file.path(my_collection, "tests")
-#> Error:
-#> ! object 'my_collection' not found
 ri_createCollection(test_collection)
-#> Error:
-#> ! object 'test_collection' not found
 ```
 
 The only argument of ri\_createCollection is the full path to the new
@@ -211,8 +177,7 @@ can show it using the ri\_listSubCollections command:
 
 ``` r
 ri_listSubCollections()
-#> Error in `get()`:
-#> ! object 'collection' not found
+#> [1] "tests"
 ```
 
 To remove a collection, the ri\_removeCollection command can be used:
@@ -276,11 +241,7 @@ default collection.
 
 ``` r
 ri_setCollection(test_collection)
-#> Error:
-#> ! object 'test_collection' not found
 ri_put(filename = file.path(testDatadir, "datafile.rds"))
-#> Error in `get()`:
-#> ! object 'collection' not found
 ```
 
 This stores the datafile.rds file as object in the default collection.
@@ -290,8 +251,7 @@ available
 
 ``` r
 ri_listDataObjects()
-#> Error in `get()`:
-#> ! object 'collection' not found
+#> [1] "datafile.rds"
 ```
 
 Overwriting and existing object is not allowed, this results in an
@@ -302,13 +262,11 @@ be forced
 ``` r
 # results in an error
 try(ri_put(filename = file.path(testDatadir, "datafile.rds")))
-#> Error in get("collection", envir = .ricmdEnv) : 
-#>   object 'collection' not found
+#> Error in ri_put(filename = file.path(testDatadir, "datafile.rds")) : 
+#>   ri_put: object allready exists and overwrite is FALSE
 
 # this works
 ri_put(filename = file.path(testDatadir, "datafile.rds"), overwrite = TRUE)
-#> Error in `get()`:
-#> ! object 'collection' not found
 ```
 
 Now that the data is stored in iRODS you can remove the local file if
@@ -330,19 +288,12 @@ locally in the data directory defined above.
 
 ``` r
 ri_get("datafile.rds")
-#> Error in `get()`:
-#> ! object 'collection' not found
 ```
 And now you can read and process the data
 
 
 ``` r
 x <- readRDS(file.path(testDatadir, "datafile.rds"))
-#> Warning in gzfile(file, "rb"): cannot open compressed file
-#> '/tmp/RtmpFmpRhm/data/datafile.rds', probable reason 'No such file or
-#> directory'
-#> Error in `gzfile()`:
-#> ! cannot open the connection
 print(length(x))
 #> [1] 10
 ```
@@ -365,18 +316,14 @@ existing file or rename it
 ``` r
 # the file allready exists, so this results in an error
 try(ri_get("datafile.rds"))
-#> Error in get("collection", envir = .ricmdEnv) : 
-#>   object 'collection' not found
+#> Error in ri_get("datafile.rds") : 
+#>   ri_get: file allready exists in data directory and overwrite=FALSE
 
 # overwrite te file
 ri_get("datafile.rds", overwrite = TRUE)
-#> Error in `get()`:
-#> ! object 'collection' not found
 
 # or use different file anme
 ri_get("datafile.rds", filename = "datafile2.rds")
-#> Error in `get()`:
-#> ! object 'collection' not found
 ```
 
 # Manage meta data
@@ -397,8 +344,6 @@ we execute:
 
 ``` r
 ri_metaAdd(object = "datafile.rds", attribute = "attr1", value = "val1")
-#> Error in `get()`:
-#> ! object 'collection' not found
 ```
 In above command we assume that `datafile.rds` is in the default
 collection. For an AVU triple, you must provide an attribute and
@@ -423,19 +368,15 @@ data.frame gives NA values for units which are NULL.
 ``` r
 # first add some more meta data
 ri_metaAdd(object = "datafile.rds", attribute = "attr2", value = "val2")
-#> Error in `get()`:
-#> ! object 'collection' not found
 ri_metaAdd(object = "datafile.rds", attribute = "attr3", value = "val3", units = "unit1")
-#> Error in `get()`:
-#> ! object 'collection' not found
 
 # get meta data
 meta <- ri_metaGet("datafile.rds")
-#> Error in `get()`:
-#> ! object 'collection' not found
 print(meta)
-#> Error:
-#> ! object 'meta' not found
+#>   attribute value units
+#> 1     attr1  val1  <NA>
+#> 2     attr2  val2  <NA>
+#> 3     attr3  val3 unit1
 ```
 
 You can also delete meta triples from an object.
@@ -444,14 +385,12 @@ You can also delete meta triples from an object.
 ``` r
 
 ri_metaRemove("datafile.rds", attribute  = "attr3", value = "val3", units = "unit1")
-#> Error in `get()`:
-#> ! object 'collection' not found
+#> NULL
 meta <- ri_metaGet("datafile.rds")
-#> Error in `get()`:
-#> ! object 'collection' not found
 print(meta)
-#> Error:
-#> ! object 'meta' not found
+#>   attribute value units
+#> 1     attr1  val1  <NA>
+#> 2     attr2  val2  <NA>
 ```
 
 ## Meta data for collections
@@ -466,11 +405,7 @@ argument is mandatory and must be the full iRODS path.
 
 ``` r
 ri_metaAddColl(collection = test_collection, attribute = "coll_attr1", value = "coll_val1")
-#> Error in `ri_metaAddColl()`:
-#> ! could not find function "ri_metaAddColl"
 ri_metaAddColl(collection = test_collection, attribute = "coll_attr2", value = "coll_val2", units = "unit2")
-#> Error in `ri_metaAddColl()`:
-#> ! could not find function "ri_metaAddColl"
 ```
 
 Use ri\_metaGetColl to retrieve all AVU tripples from the collection
@@ -481,11 +416,10 @@ return\_list = TRUE, the internal AVU list is added as attribute
 
 ``` r
 meta_coll <- ri_metaGetColl(test_collection)
-#> Error in `ri_metaGetColl()`:
-#> ! could not find function "ri_metaGetColl"
 print(meta_coll)
-#> Error:
-#> ! object 'meta_coll' not found
+#>    attribute     value units
+#> 1 coll_attr1 coll_val1  <NA>
+#> 2 coll_attr2 coll_val2 unit2
 ```
 
 If needed, you can test if a specific AVU tripple exists in the
@@ -494,11 +428,9 @@ collection with ri\_metaExistsColl.
 
 ``` r
 ri_metaExistsColl(collection = test_collection, attribute = "coll_attr1", value = "coll_val1")
-#> Error in `ri_metaExistsColl()`:
-#> ! could not find function "ri_metaExistsColl"
+#> [1] TRUE
 ri_metaExistsColl(collection = test_collection, attribute = "coll_attr2", value = "coll_val2", units = "unit2")
-#> Error in `ri_metaExistsColl()`:
-#> ! could not find function "ri_metaExistsColl"
+#> [1] TRUE
 ```
 
 To remove a collection AVU tripple, use ri\_metaRemoveColl.
@@ -506,23 +438,13 @@ To remove a collection AVU tripple, use ri\_metaRemoveColl.
 
 ``` r
 ri_metaRemoveColl(collection = test_collection, attribute = "coll_attr2", value = "coll_val2", units = "unit2")
-#> Error in `ri_metaRemoveColl()`:
-#> ! could not find function "ri_metaRemoveColl"
+#> NULL
 meta_coll <- ri_metaGetColl(test_collection)
-#> Error in `ri_metaGetColl()`:
-#> ! could not find function "ri_metaGetColl"
 print(meta_coll)
-#> Error:
-#> ! object 'meta_coll' not found
+#>    attribute     value units
+#> 1 coll_attr1 coll_val1  <NA>
 ```
 
 
-```
-#> Error:
-#> ! object 'env' not found
-#> Error:
-#> ! object 'session' not found
-#> Warning in rm(session): object 'session' not found
-```
 
 
