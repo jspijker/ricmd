@@ -27,7 +27,7 @@
 
 ri_metaRemoveColl <- function(collection, attribute, value, units = NULL) {
 
-    if (!ri_collectiontExists(collection))
+    if (!ri_collectionExists(collection))
         stop("ri_metaRemoveColl: object does not exists")
 
     if (!is.character(collection)) {

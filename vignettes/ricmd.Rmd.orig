@@ -385,6 +385,8 @@ print(meta)
 
 ```
 
+## Meta data for collections
+
 The same workflow can be used for collections with the
 ri\_metaAddColl, ri\_metaGetColl, ri\_metaExistsColl and
 ri\_metaRemoveColl functions.
